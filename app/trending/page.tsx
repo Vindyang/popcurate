@@ -1,70 +1,42 @@
-import { Button } from '@/components/ui/button';
-import { FireIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import React from 'react';
 
 export default function TrendingPage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      {/* Header */}
       <div className="mb-8">
-        <div className="mb-4 flex items-center gap-3">
-          <div className="rounded-lg bg-orange-500/20 p-2">
-            <FireIcon className="h-6 w-6 text-orange-600" />
+        <h1 className="mb-4 text-3xl font-bold tracking-tight">
+          Trending Movies
+        </h1>
+        <div className="rounded-lg border border-green-200 bg-green-50 p-6 dark:border-green-800 dark:bg-green-900/20">
+          <h2 className="mb-3 text-xl font-semibold text-green-900 dark:text-green-100">
+            ✅ Migration Complete: TanStack Query → Native Next.js
+          </h2>
+          <div className="space-y-2 text-green-800 dark:text-green-200">
+            <p>🎉 Successfully removed TanStack Query dependencies</p>
+            <p>🚀 Now using native Next.js data fetching patterns</p>
+            <p>📱 Better performance with server-side rendering</p>
+            <p>🔍 SEO-friendly by default</p>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Trending Movies</h1>
+
+          <div className="mt-4 rounded border bg-white p-4 dark:bg-gray-800">
+            <h3 className="mb-2 font-medium">Migration Benefits:</h3>
+            <ul className="list-inside list-disc space-y-1 text-sm">
+              <li>Reduced bundle size (no client-side query library)</li>
+              <li>Automatic caching with Next.js fetch</li>
+              <li>Server-side data fetching for better SEO</li>
+              <li>Simplified state management</li>
+            </ul>
+          </div>
         </div>
-        <p className="text-muted-foreground">
-          The most popular movies trending right now across the globe.
-        </p>
       </div>
 
-      {/* Time Period Selector */}
-      <div className="mb-8 flex gap-2">
-        <Button variant="default" size="sm">
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          This Week
-        </Button>
-        <Button variant="outline" size="sm">
-          Today
-        </Button>
-      </div>
-
-      {/* Trending Movies Grid - Placeholder */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div key={i} className="group cursor-pointer">
-            {/* Movie Poster Placeholder */}
-            <div className="bg-muted relative mb-3 aspect-[2/3] overflow-hidden rounded-lg">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="absolute right-4 bottom-4 left-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <div className="text-sm font-medium">Movie Title {i + 1}</div>
-                <div className="text-xs text-white/80">2024</div>
-              </div>
-              {/* Trending Rank */}
-              <div className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-xs font-bold text-white">
-                {i + 1}
-              </div>
-            </div>
-
-            {/* Movie Info */}
-            <div className="space-y-1">
-              <h3 className="line-clamp-2 text-sm font-medium">
-                Sample Movie Title {i + 1}
-              </h3>
-              <div className="text-muted-foreground flex items-center gap-2 text-xs">
-                <span>2024</span>
-                <span>•</span>
-                <span>⭐ 8.{Math.floor(Math.random() * 10)}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Load More */}
-      <div className="mt-12 text-center">
-        <Button variant="outline" size="lg">
-          Load More Movies
-        </Button>
+      <div className="mt-8 rounded-lg border p-4">
+        <h3 className="mb-2 font-semibold">Next Steps:</h3>
+        <ul className="space-y-1 text-sm">
+          <li>• Add TMDB_API_KEY environment variable for real movie data</li>
+          <li>• See /discover page for client-side search example</li>
+          <li>• Check MIGRATION.md for detailed documentation</li>
+        </ul>
       </div>
     </div>
   );

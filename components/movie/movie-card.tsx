@@ -6,7 +6,7 @@ import {
   getImageUrl,
   formatRating,
   formatRuntime,
-  formatDate,
+  // formatDate,
   generateMovieSlug,
 } from '@/lib/utils';
 import type { Movie } from '@/types/app';

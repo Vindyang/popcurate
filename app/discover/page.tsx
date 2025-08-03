@@ -1,15 +1,14 @@
-import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  FilmIcon,
   FireIcon,
   TrophyIcon,
   ClockIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { SearchMovies } from '@/components/movie/search-movies';
 
-export default function DiscoverPage() {
+export default async function DiscoverPage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
@@ -21,6 +20,38 @@ export default function DiscoverPage() {
           Explore trending movies, top-rated classics, and personalized
           recommendations just for you.
         </p>
+      </div>
+
+      {/* Search Section */}
+      <div className="mb-12">
+        <h2 className="mb-4 text-xl font-semibold">Search Movies</h2>
+        <SearchMovies />
+        <p className="mt-2 text-sm text-amber-600">
+          📝 Note: Search requires TMDB_API_KEY environment variable to work
+        </p>
+      </div>
+
+      {/* Migration Demo Note */}
+      <div className="mb-8 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+        <h3 className="font-semibold text-green-900 dark:text-green-100">
+          ✅ TanStack Query Successfully Removed
+        </h3>
+        <p className="mt-2 text-sm text-green-800 dark:text-green-200">
+          This app now uses native Next.js patterns for data fetching:
+        </p>
+        <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-green-700 dark:text-green-300">
+          <li>
+            <strong>Server Components:</strong> For initial data loading (see
+            /trending)
+          </li>
+          <li>
+            <strong>Client Components:</strong> For interactive features (search
+            above)
+          </li>
+          <li>
+            <strong>API Routes:</strong> For client-side data fetching
+          </li>
+        </ul>
       </div>
 
       {/* Quick Categories */}
@@ -110,7 +141,7 @@ export default function DiscoverPage() {
             <Link
               key={genre.id}
               href={`/genre/${genre.id}`}
-              className="group bg-background relative rounded-lg border p-4 text-center transition-all hover:scale-105 hover:shadow-md"
+              className="bg-background group relative rounded-lg border p-4 text-center transition-all hover:scale-105 hover:shadow-md"
             >
               <div className="mb-2 text-2xl">{genre.emoji}</div>
               <h3 className="text-sm font-medium">{genre.name}</h3>
