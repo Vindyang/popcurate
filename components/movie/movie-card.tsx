@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { StarIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { StarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarFilledIcon } from '@heroicons/react/24/solid';
 import {
   getImageUrl,
@@ -75,22 +75,20 @@ export function MovieCard({
         </div>
 
         {/* Movie Info */}
-        <div className="space-y-1">
-          <h3 className="group-hover:text-primary line-clamp-2 text-sm font-medium transition-colors">
+        <div className="space-y-2">
+          <h3 className="group-hover:text-primary line-clamp-2 h-10 text-sm font-medium transition-colors">
             {movie.title}
           </h3>
 
-          <div className="text-muted-foreground flex items-center gap-2 text-xs">
-            {showYear && year && (
-              <>
-                <CalendarIcon className="h-3 w-3" />
-                <span>{year}</span>
-              </>
-            )}
+          {/* Year on separate line */}
+          {showYear && year && (
+            <div className="text-muted-foreground text-xs">{year}</div>
+          )}
 
+          {/* Other metadata */}
+          <div className="text-muted-foreground flex items-center gap-2 text-xs">
             {showRuntime && runtime && (
               <>
-                {showYear && year && <span>•</span>}
                 <ClockIcon className="h-3 w-3" />
                 <span>{formatRuntime(runtime)}</span>
               </>

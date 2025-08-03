@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { FilmIcon, HeartIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { FilmIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { TMDbLogo } from '@/components/ui/tmdb-logo';
 
 export function Footer() {
   return (
@@ -141,13 +142,17 @@ export function Footer() {
             {/* Attribution */}
             <div className="text-muted-foreground flex flex-col items-center gap-2 text-xs md:flex-row md:gap-4">
               <p>© 2025 Popcurate. All rights reserved.</p>
-              <p className="flex items-center gap-1">
-                <span>
-                  This product uses the TMDb API but is not endorsed or
-                  certified by TMDb
-                </span>
-                <GlobeAltIcon className="h-3 w-3" />
-              </p>
+              <div className="flex items-center gap-2">
+                <span>Powered by</span>
+                <Link
+                  href="https://www.themoviedb.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-80"
+                >
+                  <TMDbLogo className="h-4 w-auto" />
+                </Link>
+              </div>
             </div>
 
             {/* Made with love */}

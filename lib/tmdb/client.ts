@@ -31,15 +31,6 @@ class TMDbClient {
       });
     }
 
-    // Debug logging
-    const apiKey = this.getApiKey();
-    console.log('Making request to:', url.hostname + url.pathname);
-    console.log('API key being used:', apiKey.substring(0, 8) + '...');
-    console.log(
-      'Full URL (params hidden):',
-      url.toString().replace(/api_key=[^&]*/, 'api_key=HIDDEN')
-    );
-
     const response = await fetch(url.toString(), {
       headers: {
         'Content-Type': 'application/json',
@@ -48,12 +39,6 @@ class TMDbClient {
         revalidate: 3600, // Cache for 1 hour
       },
     });
-
-    console.log('Response status:', response.status);
-    console.log(
-      'Response headers:',
-      Object.fromEntries(response.headers.entries())
-    );
 
     if (!response.ok) {
       throw new Error(

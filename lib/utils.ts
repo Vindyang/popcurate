@@ -25,7 +25,7 @@ export function formatRuntime(minutes: number): string {
 }
 
 export function formatRating(rating: number): string {
-  return (rating / 10).toFixed(1);
+  return `${Math.round(rating * 10)}%`;
 }
 
 export function getImageUrl(

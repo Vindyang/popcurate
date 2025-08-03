@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { tmdbClient } from '@/lib/tmdb/client';
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,37 +27,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // If API key is available, use the real TMDB client
-    // For now, return mock data to demonstrate the pattern
-    const mockResults = {
-      page: 1,
-      results: [
-        {
-          id: 1,
-          title: `Sample result for "${query}"`,
-          overview:
-            'This is a mock search result. Add TMDB_API_KEY to get real data.',
-          poster_path: null,
-          backdrop_path: null,
-          release_date: '2024-01-01',
-          runtime: 120,
-          vote_average: 8.0,
-          vote_count: 100,
-          popularity: 50,
-          adult: false,
-          genre_ids: [28],
-          original_language: 'en',
-          original_title: `Sample result for "${query}"`,
-          video: false,
-        },
-      ],
-      total_pages: 1,
-      total_results: 1,
-    };
+    // Use the real TMDB client to search for movies
+    const searchResults = await tmdbClient.searchMovies(query);
 
-    return Response.json(mockResults);
+    return Response.json(searchResults);
   } catch (error) {
     console.error('Movie search error:', error);
-    return Response.json({ error: 'Failed to search movies' }, { status: 500 });
+    return Response.json(
+      {
+        error: 'Failed to search movies',
+        results: [],
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }
