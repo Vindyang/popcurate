@@ -68,7 +68,7 @@ export function MovieCard({
           {/* Rating Badge */}
           {showRating && movie.vote_average > 0 && (
             <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-black/70 px-2 py-1 text-xs text-white backdrop-blur-sm">
-              <StarFilledIcon className="h-3 w-3 text-yellow-400" />
+              <StarFilledIcon className="h-3 w-3 text-white" />
               <span>{formatRating(movie.vote_average)}</span>
             </div>
           )}

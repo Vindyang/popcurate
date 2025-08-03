@@ -153,7 +153,7 @@ export function Footer() {
             {/* Made with love */}
             <div className="text-muted-foreground flex items-center gap-1 text-xs">
               <span>Made with</span>
-              <HeartIcon className="h-3 w-3 text-red-500" />
+              <HeartIcon className="h-3 w-3 text-white" />
               <span>for movie lovers</span>
             </div>
           </div>

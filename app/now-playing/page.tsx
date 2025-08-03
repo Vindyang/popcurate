@@ -18,8 +18,8 @@ export default async function NowPlayingPage({
     <div className="container mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        <div className="rounded-lg bg-green-500/20 p-3">
-          <FilmIcon className="h-8 w-8 text-green-600" />
+        <div className="bg-muted rounded-lg p-3">
+          <FilmIcon className="text-foreground h-8 w-8" />
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Now Playing</h1>

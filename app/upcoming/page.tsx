@@ -18,8 +18,8 @@ export default async function UpcomingPage({
     <div className="container mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        <div className="rounded-lg bg-blue-500/20 p-3">
-          <ClockIcon className="h-8 w-8 text-blue-600" />
+        <div className="bg-muted rounded-lg p-3">
+          <ClockIcon className="text-foreground h-8 w-8" />
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Upcoming Movies</h1>

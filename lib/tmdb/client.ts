@@ -8,25 +8,37 @@ import type {
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
-const API_KEY = process.env.TMDB_API_KEY;
-
-if (!API_KEY) {
-  throw new Error('TMDB_API_KEY environment variable is required');
-}
 
 class TMDbClient {
+  private getApiKey(): string {
+    const apiKey = process.env.TMDB_API_KEY;
+    if (!apiKey) {
+      throw new Error('TMDB_API_KEY environment variable is required');
+    }
+    return apiKey;
+  }
+
   private async request<T>(
     endpoint: string,
     params?: Record<string, string>
   ): Promise<T> {
     const url = new URL(`${BASE_URL}${endpoint}`);
-    url.searchParams.set('api_key', API_KEY!);
+    url.searchParams.set('api_key', this.getApiKey());
 
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         url.searchParams.set(key, value);
       });
     }
+
+    // Debug logging
+    const apiKey = this.getApiKey();
+    console.log('Making request to:', url.hostname + url.pathname);
+    console.log('API key being used:', apiKey.substring(0, 8) + '...');
+    console.log(
+      'Full URL (params hidden):',
+      url.toString().replace(/api_key=[^&]*/, 'api_key=HIDDEN')
+    );
 
     const response = await fetch(url.toString(), {
       headers: {
@@ -36,6 +48,12 @@ class TMDbClient {
         revalidate: 3600, // Cache for 1 hour
       },
     });
+
+    console.log('Response status:', response.status);
+    console.log(
+      'Response headers:',
+      Object.fromEntries(response.headers.entries())
+    );
 
     if (!response.ok) {
       throw new Error(

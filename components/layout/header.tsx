@@ -57,12 +57,6 @@ export function Header() {
           {/* Navigation Links */}
           <nav className="hidden items-center space-x-6 md:flex">
             <Link
-              href="/discover"
-              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
-            >
-              Discover
-            </Link>
-            <Link
               href="/watchlists"
               className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
             >
@@ -74,6 +68,12 @@ export function Header() {
               className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
             >
               Trending
+            </Link>
+            <Link
+              href="/top-rated"
+              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+            >
+              Top Rated
             </Link>
           </nav>
 

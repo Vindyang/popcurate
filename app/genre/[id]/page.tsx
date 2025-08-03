@@ -65,7 +65,7 @@ export default async function GenrePage({
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Header */}
         <div className="mb-8 flex items-center gap-4">
-          <div className="rounded-lg bg-purple-500/20 p-3">
+          <div className="bg-muted rounded-lg p-3">
             <span className="text-2xl">{emoji}</span>
           </div>
           <div>

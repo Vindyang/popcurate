@@ -69,7 +69,7 @@ export function SearchMovies({ className }: SearchMoviesProps) {
       </form>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-200">
+        <div className="bg-muted text-foreground mb-4 rounded-lg border p-4">
           {error}
         </div>
       )}
