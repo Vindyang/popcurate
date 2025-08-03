@@ -2,44 +2,31 @@ import { Suspense } from 'react';
 import { tmdbClient } from '@/lib/tmdb/client';
 import { MovieCard } from '@/components/movie/movie-card';
 import { Button } from '@/components/ui/button';
-import { FireIcon } from '@heroicons/react/24/outline';
+import { ClockIcon } from '@heroicons/react/24/outline';
 
-interface TrendingPageProps {
-  searchParams: { page?: string; time_window?: string };
+interface UpcomingPageProps {
+  searchParams: { page?: string };
 }
 
-export default async function TrendingPage({
+export default async function UpcomingPage({
   searchParams,
-}: TrendingPageProps) {
+}: UpcomingPageProps) {
   const page = parseInt(searchParams.page || '1');
-  const timeWindow = (searchParams.time_window || 'week') as 'day' | 'week';
-
-  const movies = await tmdbClient.getTrendingMovies(timeWindow, page);
+  const movies = await tmdbClient.getUpcomingMovies(page);
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
-        <div className="rounded-lg bg-orange-500/20 p-3">
-          <FireIcon className="h-8 w-8 text-orange-600" />
+        <div className="rounded-lg bg-blue-500/20 p-3">
+          <ClockIcon className="h-8 w-8 text-blue-600" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Trending Movies</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Upcoming Movies</h1>
           <p className="text-muted-foreground">
-            The most popular movies{' '}
-            {timeWindow === 'day' ? 'today' : 'this week'}
+            Movies coming soon to theaters
           </p>
         </div>
-      </div>
-
-      {/* Time Window Toggle */}
-      <div className="mb-8 flex gap-2">
-        <Button variant={timeWindow === 'week' ? 'default' : 'outline'} asChild>
-          <a href="?time_window=week">This Week</a>
-        </Button>
-        <Button variant={timeWindow === 'day' ? 'default' : 'outline'} asChild>
-          <a href="?time_window=day">Today</a>
-        </Button>
       </div>
 
       {/* Results Count */}
@@ -70,9 +57,7 @@ export default async function TrendingPage({
         <div className="mt-12 flex justify-center gap-2">
           {page > 1 && (
             <Button variant="outline" asChild>
-              <a href={`?page=${page - 1}&time_window=${timeWindow}`}>
-                Previous
-              </a>
+              <a href={`?page=${page - 1}`}>Previous</a>
             </Button>
           )}
 
@@ -82,7 +67,7 @@ export default async function TrendingPage({
 
           {page < movies.total_pages && (
             <Button variant="outline" asChild>
-              <a href={`?page=${page + 1}&time_window=${timeWindow}`}>Next</a>
+              <a href={`?page=${page + 1}`}>Next</a>
             </Button>
           )}
         </div>
@@ -92,6 +77,6 @@ export default async function TrendingPage({
 }
 
 export const metadata = {
-  title: 'Trending Movies | Popcurate',
-  description: 'Discover the most popular movies trending right now.',
+  title: 'Upcoming Movies | Popcurate',
+  description: 'Discover movies coming soon to theaters.',
 };

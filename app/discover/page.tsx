@@ -7,8 +7,32 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { SearchMovies } from '@/components/movie/search-movies';
+import { MovieCard } from '@/components/movie/movie-card';
+import { tmdbClient } from '@/lib/tmdb/client';
+import type { TMDbMovie } from '@/types/tmdb';
 
 export default async function DiscoverPage() {
+  // Fetch real genres from TMDB
+  let genres = defaultGenres; // fallback to default
+  try {
+    const genresResponse = await tmdbClient.getGenres();
+    // Map TMDB genres to our format with emojis
+    genres = genresResponse.genres.map(
+      (genre: { id: number; name: string }) => {
+        const defaultGenre = defaultGenres.find(
+          (g: { id: number; name: string; emoji: string }) => g.id === genre.id
+        );
+        return {
+          id: genre.id,
+          name: genre.name,
+          emoji: defaultGenre?.emoji || '🎬', // fallback emoji
+        };
+      }
+    );
+  } catch (error) {
+    console.error('Error fetching genres:', error);
+    // Use default genres if API fails
+  }
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
@@ -26,32 +50,6 @@ export default async function DiscoverPage() {
       <div className="mb-12">
         <h2 className="mb-4 text-xl font-semibold">Search Movies</h2>
         <SearchMovies />
-        <p className="mt-2 text-sm text-amber-600">
-          📝 Note: Search requires TMDB_API_KEY environment variable to work
-        </p>
-      </div>
-
-      {/* Migration Demo Note */}
-      <div className="mb-8 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
-        <h3 className="font-semibold text-green-900 dark:text-green-100">
-          ✅ TanStack Query Successfully Removed
-        </h3>
-        <p className="mt-2 text-sm text-green-800 dark:text-green-200">
-          This app now uses native Next.js patterns for data fetching:
-        </p>
-        <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-green-700 dark:text-green-300">
-          <li>
-            <strong>Server Components:</strong> For initial data loading (see
-            /trending)
-          </li>
-          <li>
-            <strong>Client Components:</strong> For interactive features (search
-            above)
-          </li>
-          <li>
-            <strong>API Routes:</strong> For client-side data fetching
-          </li>
-        </ul>
       </div>
 
       {/* Quick Categories */}
@@ -137,7 +135,7 @@ export default async function DiscoverPage() {
       <div className="mb-12">
         <h2 className="mb-6 text-2xl font-bold">Browse by Genre</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {genres.map((genre) => (
+          {genres.map((genre: { id: number; name: string; emoji: string }) => (
             <Link
               key={genre.id}
               href={`/genre/${genre.id}`}
@@ -174,8 +172,8 @@ export default async function DiscoverPage() {
   );
 }
 
-// Movie Section Component (placeholder for now)
-function MovieSection({
+// Movie Section Component - now fetches real data
+async function MovieSection({
   title,
   description,
   endpoint,
@@ -184,6 +182,36 @@ function MovieSection({
   description: string;
   endpoint: string;
 }) {
+  let movies: TMDbMovie[] = [];
+
+  try {
+    // Fetch movies based on the endpoint
+    let response;
+    switch (endpoint) {
+      case '/trending':
+        response = await tmdbClient.getTrendingMovies('week', 1);
+        break;
+      case '/top-rated':
+        response = await tmdbClient.getTopRatedMovies(1);
+        break;
+      case '/now-playing':
+        response = await tmdbClient.getNowPlayingMovies(1);
+        break;
+      case '/upcoming':
+        response = await tmdbClient.getUpcomingMovies(1);
+        break;
+      default:
+        response = await tmdbClient.getPopularMovies(1);
+    }
+
+    // Take first 6 movies for the preview
+    movies = response.results.slice(0, 6);
+  } catch (error) {
+    console.error(`Error fetching movies for ${endpoint}:`, error);
+    // Fallback to empty array if there's an error
+    movies = [];
+  }
+
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
@@ -196,21 +224,32 @@ function MovieSection({
         </Button>
       </div>
 
-      {/* Placeholder for movie grid */}
+      {/* Movie grid */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="bg-muted aspect-[2/3] animate-pulse rounded-lg"
-          />
-        ))}
+        {movies.length > 0
+          ? movies.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                movie={movie}
+                size="sm"
+                showRating={true}
+                showYear={true}
+              />
+            ))
+          : // Fallback placeholders if no movies or error
+            Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-muted aspect-[2/3] animate-pulse rounded-lg"
+              />
+            ))}
       </div>
     </section>
   );
 }
 
-// Sample genres data
-const genres = [
+// Sample genres data with emojis (fallback)
+const defaultGenres = [
   { id: 28, name: 'Action', emoji: '💥' },
   { id: 12, name: 'Adventure', emoji: '🗺️' },
   { id: 35, name: 'Comedy', emoji: '😂' },
