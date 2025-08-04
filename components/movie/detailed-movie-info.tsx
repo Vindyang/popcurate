@@ -59,11 +59,11 @@ export async function DetailedMovieInfo({ movie }: DetailedMovieInfoProps) {
     },
     {
       label: 'Budget',
-      value: movie.budget ? formatCurrency(movie.budget) : null,
+      value: movie.budget ? formatCurrency(movie.budget) + ' (USD)' : null,
     },
     {
       label: 'Revenue',
-      value: movie.revenue ? formatCurrency(movie.revenue) : null,
+      value: movie.revenue ? formatCurrency(movie.revenue) + ' (USD)' : null,
     },
     {
       label: 'Popularity Score',

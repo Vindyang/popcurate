@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { SearchMovies } from '@/components/movie/search-movies';
 import { MovieCard } from '@/components/movie/movie-card';
 import { tmdbClient } from '@/lib/tmdb/client';
 import type { TMDbMovie } from '@/types/tmdb';
@@ -24,16 +23,6 @@ export default function Home() {
                   Discover, explore, and curate your perfect movie collection
                   with Popcurate.
                 </p>
-              </div>
-
-              {/* Search Bar */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium">
-                  What are you in the mood for?
-                </label>
-                <div className="mt-4">
-                  <SearchMovies />
-                </div>
               </div>
             </div>
 

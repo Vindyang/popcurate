@@ -138,6 +138,10 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  /* Ensure smooth scrolling on touch devices */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent momentum scrolling issues */
+  overscroll-behavior-x: contain;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

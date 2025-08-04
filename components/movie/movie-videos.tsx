@@ -17,7 +17,7 @@ function VideoThumbnail({ video }: { video: TMDbVideo }) {
   const videoUrl = `https://www.youtube.com/watch?v=${video.key}`;
 
   return (
-    <div className="group bg-muted relative aspect-video w-64 flex-shrink-0 overflow-hidden rounded-lg md:w-72">
+    <div className="group bg-muted relative aspect-video w-64 flex-shrink-0 overflow-hidden rounded-lg transition-transform duration-300 ease-out hover:scale-105 hover:z-10 md:w-72">
       <a
         href={videoUrl}
         target="_blank"
@@ -29,15 +29,15 @@ function VideoThumbnail({ video }: { video: TMDbVideo }) {
           alt={video.name}
           width={320}
           height={180}
-          className="h-full w-full object-cover transition-transform group-hover:scale-105"
+          className="h-full w-full object-cover transition-all duration-300 group-hover:brightness-110"
           unoptimized // YouTube thumbnails don't need optimization
         />
 
         {/* Play button overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 transition-colors group-hover:bg-red-700">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-all duration-300 group-hover:bg-black/10">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110 group-hover:shadow-lg">
             <svg
-              className="h-5 w-5 text-white"
+              className="h-5 w-5 text-white transition-transform duration-300 group-hover:scale-110"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -47,7 +47,7 @@ function VideoThumbnail({ video }: { video: TMDbVideo }) {
         </div>
       </a>
 
-      <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+      <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-3 transition-all duration-300 group-hover:from-black/80">
         <p className="truncate text-xs font-medium text-white">{video.name}</p>
         <p className="text-xs text-gray-300 capitalize">
           {video.type.toLowerCase()}
@@ -174,7 +174,7 @@ export function MovieVideos({ movieId }: MovieVideosProps) {
         {/* Videos Container */}
         <div
           ref={scrollRef}
-          className="scrollbar-hide flex flex-1 gap-4 overflow-x-auto pb-4"
+          className="scrollbar-hide flex flex-1 gap-4 overflow-x-auto pb-4 pt-2"
         >
           {videos.map((video) => (
             <VideoThumbnail key={video.id} video={video} />
