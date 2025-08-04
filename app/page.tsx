@@ -30,7 +30,6 @@ export default function Home() {
             <div className="relative">
               <div className="from-primary/10 to-secondary/10 aspect-[4/3] rounded-2xl bg-gradient-to-br p-8">
                 <div className="flex h-full flex-col justify-center space-y-4 text-center">
-                  <div className="text-6xl">🎬</div>
                   <h3 className="text-xl font-semibold">Millions of Movies</h3>
                   <p className="text-muted-foreground">
                     From blockbusters to indie gems
@@ -47,31 +46,31 @@ export default function Home() {
         <div className="container mx-auto max-w-7xl px-4">
           <div className="space-y-16">
             <MovieSection
-              title="🔥 Trending This Week"
+              title="Trending This Week"
               description="The most popular movies everyone's talking about"
               endpoint="/trending"
             />
 
             <MovieSection
-              title="⭐ Highest Rated"
+              title="Highest Rated"
               description="Critically acclaimed masterpieces you shouldn't miss"
               endpoint="/top-rated"
             />
 
             <MovieSection
-              title="🎭 Now Playing"
+              title="Now Playing"
               description="Movies currently showing in theaters worldwide"
               endpoint="/now-playing"
             />
 
             <MovieSection
-              title="🚀 Coming Soon"
+              title="Coming Soon"
               description="Upcoming movies to add to your watchlist"
               endpoint="/upcoming"
             />
 
             <MovieSection
-              title="🎯 Popular Movies"
+              title="Popular Movies"
               description="Most popular movies right now"
               endpoint="/popular"
             />

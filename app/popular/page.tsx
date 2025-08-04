@@ -17,7 +17,7 @@ export default async function PopularPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold tracking-tight">
-          🎯 Popular Movies
+          Popular Movies
         </h1>
         <p className="text-muted-foreground">
           The most popular movies right now across all platforms

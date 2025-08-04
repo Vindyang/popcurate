@@ -5,39 +5,18 @@ import { Button } from '@/components/ui/button';
 import { notFound } from 'next/navigation';
 
 interface GenrePageProps {
-  params: { id: string };
-  searchParams: { page?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
-
-// Default genres with emojis for display
-const genreEmojis: Record<number, string> = {
-  28: '💥', // Action
-  12: '🗺️', // Adventure
-  35: '😂', // Comedy
-  18: '🎭', // Drama
-  27: '👻', // Horror
-  10749: '❤️', // Romance
-  878: '🚀', // Sci-Fi
-  53: '😱', // Thriller
-  16: '🎨', // Animation
-  14: '🔮', // Fantasy
-  80: '🕵️', // Crime
-  9648: '🔍', // Mystery
-  99: '📚', // Documentary
-  10751: '👨‍👩‍👧‍👦', // Family
-  36: '🏛️', // History
-  10402: '🎵', // Music
-  37: '🤠', // Western
-  10752: '⚔️', // War
-  10770: '📺', // TV Movie
-};
 
 export default async function GenrePage({
   params,
   searchParams,
 }: GenrePageProps) {
-  const genreId = parseInt(params.id);
-  const page = parseInt(searchParams.page || '1');
+  const { id } = await params;
+  const { page: pageParam } = await searchParams;
+  const genreId = parseInt(id);
+  const page = parseInt(pageParam || '1');
 
   if (isNaN(genreId)) {
     notFound();
@@ -59,23 +38,16 @@ export default async function GenrePage({
       notFound();
     }
 
-    const emoji = genreEmojis[genreId] || '🎬';
-
     return (
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Header */}
-        <div className="mb-8 flex items-center gap-4">
-          <div className="bg-muted rounded-lg p-3">
-            <span className="text-2xl">{emoji}</span>
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {genre.name} Movies
-            </h1>
-            <p className="text-muted-foreground">
-              Discover the best {genre.name.toLowerCase()} movies
-            </p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">
+            {genre.name} Movies
+          </h1>
+          <p className="text-muted-foreground">
+            Discover the best {genre.name.toLowerCase()} movies
+          </p>
         </div>
 
         {/* Results Count */}
@@ -129,8 +101,13 @@ export default async function GenrePage({
   }
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const genreId = parseInt(params.id);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const genreId = parseInt(id);
 
   try {
     const genresResponse = await tmdbClient.getGenres();

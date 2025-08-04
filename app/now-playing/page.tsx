@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { FilmIcon } from '@heroicons/react/24/outline';
 
 interface NowPlayingPageProps {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }
 
 export default async function NowPlayingPage({
   searchParams,
 }: NowPlayingPageProps) {
-  const page = parseInt(searchParams.page || '1');
+  const { page: pageParam } = await searchParams;
+  const page = parseInt(pageParam || '1');
   const movies = await tmdbClient.getNowPlayingMovies(page);
 
   return (

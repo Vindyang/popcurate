@@ -5,14 +5,15 @@ import { Button } from '@/components/ui/button';
 import { FireIcon } from '@heroicons/react/24/outline';
 
 interface TrendingPageProps {
-  searchParams: { page?: string; time_window?: string };
+  searchParams: Promise<{ page?: string; time_window?: string }>;
 }
 
 export default async function TrendingPage({
   searchParams,
 }: TrendingPageProps) {
-  const page = parseInt(searchParams.page || '1');
-  const timeWindow = (searchParams.time_window || 'week') as 'day' | 'week';
+  const { page: pageParam, time_window } = await searchParams;
+  const page = parseInt(pageParam || '1');
+  const timeWindow = (time_window || 'week') as 'day' | 'week';
 
   const movies = await tmdbClient.getTrendingMovies(timeWindow, page);
 

@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { TrophyIcon } from '@heroicons/react/24/outline';
 
 interface TopRatedPageProps {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }
 
 export default async function TopRatedPage({
   searchParams,
 }: TopRatedPageProps) {
-  const page = parseInt(searchParams.page || '1');
+  const { page: pageParam } = await searchParams;
+  const page = parseInt(pageParam || '1');
   const movies = await tmdbClient.getTopRatedMovies(page);
 
   return (

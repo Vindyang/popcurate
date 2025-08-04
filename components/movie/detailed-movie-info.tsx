@@ -96,11 +96,11 @@ export async function DetailedMovieInfo({ movie }: DetailedMovieInfoProps) {
         </div>
       )}
 
-      {/* External Links */}
+      {/* More Information */}
       {hasExternalLinks && (
         <div>
           <h3 className="text-muted-foreground mb-4 text-sm font-semibold tracking-wide uppercase">
-            External Links
+            More Information
           </h3>
           <div className="flex flex-wrap gap-3">
             {externalIds?.imdb_id && (

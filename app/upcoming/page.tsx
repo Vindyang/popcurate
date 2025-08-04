@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import { ClockIcon } from '@heroicons/react/24/outline';
 
 interface UpcomingPageProps {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }
 
 export default async function UpcomingPage({
   searchParams,
 }: UpcomingPageProps) {
-  const page = parseInt(searchParams.page || '1');
+  const { page: pageParam } = await searchParams;
+  const page = parseInt(pageParam || '1');
   const movies = await tmdbClient.getUpcomingMovies(page);
 
   return (
