@@ -170,7 +170,7 @@ export default async function MovieDetailPage({ params }: PageProps) {
 
         {/* Related Movies */}
         <div className="mt-16">
-          <RelatedMovies movieId={movieId} />
+          <RelatedMovies movie={movie} />
         </div>
       </div>
     </div>
