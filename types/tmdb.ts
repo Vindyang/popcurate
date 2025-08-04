@@ -128,3 +128,22 @@ export interface TMDbImage {
   vote_count: number;
   width: number;
 }
+
+export interface TMDbWatchProvider {
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+  display_priority: number;
+}
+
+export interface TMDbWatchProviders {
+  id: number;
+  results: {
+    [countryCode: string]: {
+      link: string;
+      flatrate?: TMDbWatchProvider[];
+      rent?: TMDbWatchProvider[];
+      buy?: TMDbWatchProvider[];
+    };
+  };
+}

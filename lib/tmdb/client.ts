@@ -4,6 +4,7 @@ import type {
   TMDbCredits,
   TMDbVideos,
   TMDbImages,
+  TMDbWatchProviders,
 } from '@/types/tmdb';
 
 const BASE_URL =
@@ -170,6 +171,24 @@ class TMDbClient {
     return this.request<{ genres: Array<{ id: number; name: string }> }>(
       '/genre/movie/list'
     );
+  }
+
+  // Get watch providers for a movie
+  async getWatchProviders(movieId: number): Promise<TMDbWatchProviders> {
+    return this.request<TMDbWatchProviders>(
+      `/movie/${movieId}/watch/providers`
+    );
+  }
+
+  // Get external IDs for a movie (IMDB, Apple TV, etc.)
+  async getMovieExternalIds(movieId: number) {
+    return this.request<{
+      imdb_id?: string;
+      facebook_id?: string;
+      instagram_id?: string;
+      twitter_id?: string;
+      wikidata_id?: string;
+    }>(`/movie/${movieId}/external_ids`);
   }
 }
 

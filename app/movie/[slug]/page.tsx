@@ -1,6 +1,4 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,98 +9,35 @@ import {
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarFilledIcon } from '@heroicons/react/24/solid';
 import { getImageUrl, formatRating, formatRuntime } from '@/lib/utils';
+import { tmdbClient } from '@/lib/tmdb/client';
+import { MovieVideos } from '@/components/movie/movie-videos';
+import { RelatedMovies } from '@/components/movie/related-movies';
+import { DetailedMovieInfo } from '@/components/movie/detailed-movie-info';
 import type { TMDbMovieDetails } from '@/types/tmdb';
 
-export default function MovieDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const [movie, setMovie] = useState<TMDbMovieDetails | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
-  useEffect(() => {
-    if (!slug) return;
+export default async function MovieDetailPage({ params }: PageProps) {
+  const { slug } = await params;
 
-    // Extract movie ID from slug (assuming slug format: "movie-title-year-id")
-    const parts = slug.split('-');
-    const movieId = parts[parts.length - 1];
+  // Extract movie ID from slug (assuming slug format: "movie-title-year-id")
+  const parts = slug.split('-');
+  const movieIdString = parts[parts.length - 1];
+  const movieId = parseInt(movieIdString);
 
-    if (!movieId || isNaN(Number(movieId))) {
-      setError('Invalid movie ID');
-      setLoading(false);
-      return;
-    }
-
-    const fetchMovie = async () => {
-      try {
-        setLoading(true);
-        // Use our API route instead of direct tmdbClient call
-        const response = await fetch(`/api/movies/${movieId}`);
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch movie details');
-        }
-
-        const movieData = await response.json();
-        setMovie(movieData);
-      } catch (err) {
-        console.error('Error fetching movie details:', err);
-        setError(
-          err instanceof Error ? err.message : 'Failed to load movie details'
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovie();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="bg-background min-h-screen">
-        <div className="container mx-auto max-w-6xl px-4 py-8">
-          <div className="animate-pulse">
-            <div className="bg-muted mb-6 h-6 w-32 rounded"></div>
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div className="lg:col-span-1">
-                <div className="bg-muted aspect-[2/3] rounded-lg"></div>
-              </div>
-              <div className="space-y-4 lg:col-span-2">
-                <div className="bg-muted h-8 w-3/4 rounded"></div>
-                <div className="bg-muted h-4 w-1/2 rounded"></div>
-                <div className="bg-muted h-20 rounded"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  if (!movieIdString || isNaN(movieId)) {
+    notFound();
   }
 
-  if (error || !movie) {
-    return (
-      <div className="bg-background min-h-screen">
-        <div className="container mx-auto max-w-6xl px-4 py-8">
-          <Link href="/">
-            <Button variant="ghost" className="mb-6">
-              <ArrowLeftIcon className="mr-2 h-4 w-4" />
-              Back to Home
-            </Button>
-          </Link>
-          <div className="py-12 text-center">
-            <h1 className="mb-4 text-2xl font-bold">Movie Not Found</h1>
-            <p className="text-muted-foreground mb-6">
-              {error || "The movie you're looking for doesn't exist."}
-            </p>
-            <Link href="/">
-              <Button>Return to Home</Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+  let movie: TMDbMovieDetails | null = null;
+
+  try {
+    movie = await tmdbClient.getMovieDetails(movieId);
+  } catch (error) {
+    console.error('Error fetching movie details:', error);
+    notFound();
   }
 
   const year = movie.release_date
@@ -221,6 +156,21 @@ export default function MovieDetailPage() {
                 )}
             </div>
           </div>
+        </div>
+
+        {/* Movie Videos & Trailers */}
+        <div className="mt-16">
+          <MovieVideos movieId={movieId} />
+        </div>
+
+        {/* Detailed Movie Information */}
+        <div className="mt-16">
+          <DetailedMovieInfo movie={movie} />
+        </div>
+
+        {/* Related Movies */}
+        <div className="mt-16">
+          <RelatedMovies movieId={movieId} />
         </div>
       </div>
     </div>
