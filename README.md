@@ -31,7 +31,7 @@ A modern movie discovery web application built with Next.js 15 that helps users 
 - **Next.js 15** with App Router and React 19
 - **TypeScript** for type safety
 - **Tailwind CSS v4** for styling
-- **Radix UI** components for accessible UI primitives
+- **shadcn/ui** components
 - **Heroicons & Lucide React** for icons
 - **next-themes** for dark/light mode
 
@@ -107,7 +107,7 @@ popcurate/
 │   ├── upcoming/          # Upcoming movies page
 │   └── globals.css        # Global styles
 ├── components/            # Reusable UI components
-│   ├── ui/               # Base UI components (Button, Dialog, etc.)
+│   ├── ui/               # shadcn/ui components (Button, Dialog, etc.)
 │   ├── movie/            # Movie-specific components
 │   ├── layout/           # Layout components (Header, Footer)
 │   └── theme-provider.tsx # Theme context provider
@@ -271,7 +271,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **TMDb** for comprehensive movie data API
 - **Vercel** for hosting and deployment platform
-- **Radix UI** for accessible component primitives
+- **shadcn/ui** for beautiful and accessible component library
 - **Tailwind CSS** for utility-first styling
 - **Next.js team** for the excellent React framework
 - **Bun** for fast runtime and package management
