@@ -2,60 +2,58 @@
 
 **Curated popcorn-ready picks, daily**
 
-A modern, full-stack movie recommendation web application built with Next.js 15 that helps users discover, track, and curate movie watchlists with personalized recommendations and community-driven curation.
+A modern movie discovery web application built with Next.js 15 that helps users discover and explore movies using The Movie Database (TMDb) API. Find trending movies, browse by genre, search for specific titles, and get detailed movie information including trailers and watch providers.
 
 ## ✨ Features
 
-### Core Functionality
+### Current Features
 
 - 🔍 **Movie Search & Discovery** - Powered by TMDb API
-- 🎯 **Personalized Recommendations** - AI-powered suggestion engine
+- � **Movie Categories** - Browse trending, popular, top-rated, now playing, and upcoming movies
+- 🏷️ **Genre Filtering** - Discover movies by genre
+- 📱 **Responsive Design** - Mobile-first design with Tailwind CSS
+- 🌙 **Dark/Light Mode** - Theme switching with next-themes
+- 🎥 **Movie Details** - Comprehensive movie information with trailers
+- 🔗 **Watch Providers** - Find where to watch movies legally
+- 📺 **Movie Videos** - Trailers and clips integration
+
+### Coming Soon
+
 - 📝 **Custom Watchlists** - Create and manage movie lists
 - ⭐ **User Ratings & Reviews** - Community-driven feedback
+- 🎯 **Personalized Recommendations** - AI-powered suggestions
 - 👥 **Social Features** - Follow users and share recommendations
-
-### Advanced Features
-
-- 🧠 **Mood-Based Recommendations** - AI-powered suggestions using pgvector
-- 🎬 **Trailer Streaming** - Secure video playback
-- 📱 **PWA Support** - Mobile-first responsive design
-- 🌙 **Dark/Light Mode** - Theme switching
-- 🔄 **Real-time Updates** - Live notifications and chat
 
 ## 🛠 Tech Stack
 
 ### Frontend
 
-- **Next.js 15** with App Router
+- **Next.js 15** with App Router and React 19
 - **TypeScript** for type safety
 - **Tailwind CSS v4** for styling
-- **shadcn/ui** components (Radix + Tailwind)
-- **Heroicons/Lucide** for icons
+- **Radix UI** components for accessible UI primitives
+- **Heroicons & Lucide React** for icons
+- **next-themes** for dark/light mode
 
 ### Backend & Database
 
-- **Supabase** (PostgreSQL + Auth + Realtime)
-- **Row Level Security** for data protection
-- **Supabase Auth** with OAuth providers
+- **Supabase** (PostgreSQL + Auth + Realtime) - _Coming Soon_
+- **TMDb API** for movie data
+- **Next.js API Routes** for backend functionality
 
-### State Management & Data Fetching
+### Development Tools
 
-- **TanStack Query v5** for client-side caching
-- **React Server Components** for optimal performance
-- **Server Actions** for mutations
-
-### APIs & External Services
-
-- **TMDb API** - Movie metadata, cast, crew, ratings
-- **Internet Archive API** - Public domain movie streaming
-- **Streaming Availability API** - Legal streaming sources
+- **Bun** as runtime and package manager
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **Husky** for git hooks
+- **TypeScript** for type checking
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ or Bun 1.0+
-- Supabase account
 - TMDb API key
 
 ### Installation
@@ -74,26 +72,16 @@ bun install
 cp .env.example .env.local
 ```
 
-Fill in your actual values in `.env.local`:
+Fill in your TMDb API credentials in `.env.local`:
 
-- Get Supabase credentials from [Supabase Dashboard](https://supabase.com/dashboard)
-- Get TMDb API key from [TMDb API Settings](https://www.themoviedb.org/settings/api)
-- Generate NEXTAUTH_SECRET: `openssl rand -base64 32`
-
-3. **Set up Supabase:**
-
-```bash
-# Install Supabase CLI
-bun add -g @supabase/cli
-
-# Initialize Supabase
-supabase init
-
-# Start local development
-supabase start
+```env
+TMDB_API_KEY=your_tmdb_api_key_here
+TMDB_ACCESS_TOKEN=your_tmdb_read_access_token_here
 ```
 
-4. **Run the development server:**
+Get your TMDb API key from [TMDb API Settings](https://www.themoviedb.org/settings/api)
+
+3. **Run the development server:**
 
 ```bash
 bun dev
@@ -106,21 +94,34 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 ```
 popcurate/
 ├── app/                    # Next.js App Router
-│   ├── (auth)/            # Authentication routes
-│   ├── movies/            # Movie-related pages
-│   ├── watchlist/         # Watchlist management
-│   ├── profile/           # User profiles
-│   └── api/               # API routes
+│   ├── api/               # API routes
+│   │   ├── movies/        # Movie-related API endpoints
+│   │   └── debug/         # Debug endpoints
+│   ├── genre/[id]/        # Genre-specific movie pages
+│   ├── movie/[slug]/      # Individual movie detail pages
+│   ├── now-playing/       # Now playing movies page
+│   ├── popular/           # Popular movies page
+│   ├── search/            # Search functionality
+│   ├── top-rated/         # Top rated movies page
+│   ├── trending/          # Trending movies page
+│   ├── upcoming/          # Upcoming movies page
+│   └── globals.css        # Global styles
 ├── components/            # Reusable UI components
-│   ├── ui/               # shadcn/ui components
+│   ├── ui/               # Base UI components (Button, Dialog, etc.)
 │   ├── movie/            # Movie-specific components
-│   └── layout/           # Layout components
+│   ├── layout/           # Layout components (Header, Footer)
+│   └── theme-provider.tsx # Theme context provider
 ├── lib/                  # Utility functions and configurations
-│   ├── supabase/         # Supabase client and utilities
 │   ├── tmdb/             # TMDb API integration
-│   └── utils/            # General utilities
+│   ├── supabase/         # Supabase client setup
+│   ├── hooks/            # Custom React hooks
+│   └── utils.ts          # General utilities
 ├── types/                # TypeScript type definitions
-└── supabase/             # Database schema and migrations
+│   ├── tmdb.ts           # TMDb API types
+│   ├── app.ts            # App-specific types
+│   └── supabase.ts       # Supabase types
+├── public/               # Static assets
+└── docs/                 # Documentation
 ```
 
 ## 🔧 Development
@@ -128,103 +129,131 @@ popcurate/
 ### Available Scripts
 
 ```bash
-bun dev          # Start development server
+bun dev          # Start development server with Turbopack
 bun build        # Build for production
 bun start        # Start production server
 bun lint         # Run ESLint
+bun lint:fix     # Run ESLint with auto-fix
 bun type-check   # Run TypeScript compiler
+bun format       # Format code with Prettier
+bun format:check # Check code formatting
 ```
 
 ### Code Quality
 
-- **ESLint** for code linting
-- **Prettier** for code formatting
+- **ESLint** for code linting with Next.js config
+- **Prettier** with Tailwind CSS plugin for code formatting
+- **TypeScript** for type checking
 - **Husky** for git hooks
 - **lint-staged** for pre-commit checks
 
-## 🗄 Database Schema
+## 🎬 API Endpoints
 
-### Key Tables
+### Movie Routes
 
-- `users` - User profiles and preferences
-- `movies` - TMDb data cache with enhancements
-- `watchlists` - User-created movie lists
-- `reviews` - User ratings and reviews
-- `recommendations` - AI-generated suggestions
-- `follows` - Social following relationships
+- `GET /api/movies/trending` - Get trending movies
+- `GET /api/movies/popular` - Get popular movies
+- `GET /api/movies/top-rated` - Get top-rated movies
+- `GET /api/movies/now-playing` - Get now playing movies
+- `GET /api/movies/upcoming` - Get upcoming movies
+- `GET /api/movies/search` - Search movies
+- `GET /api/movies/genres` - Get movie genres
+- `GET /api/movies/discover` - Discover movies with filters
+- `GET /api/movies/[id]` - Get movie details
+- `GET /api/movies/[id]/videos` - Get movie videos/trailers
 
-### Security
+### Debug Routes
 
-- Row Level Security (RLS) policies
-- User data isolation
-- Secure API routes with middleware
+- `GET /api/debug/env` - Environment variables check
+- `GET /api/debug/tmdb-test` - TMDb API connection test
 
-## 🔐 Authentication
+## � TMDb API Integration
 
-- **Supabase Auth** with social providers
-- **Cookie-based sessions** for SSR
-- **Anonymous sessions** with upgrade paths
-- **OAuth providers**: GitHub, Google
+### Features
 
-## 📊 API Integration
+- **Movie Data**: Comprehensive movie information including cast, crew, ratings
+- **Search**: Full-text search across movie titles and descriptions
+- **Categories**: Trending, popular, top-rated, now playing, upcoming
+- **Genres**: Browse movies by genre categories
+- **Videos**: Trailers, teasers, and behind-the-scenes content
+- **Images**: Posters, backdrops, and stills
 
-### TMDb API
+### Attribution
 
-- **Attribution**: "This product uses the TMDb API but is not endorsed or certified by TMDb"
-- **Rate limiting**: Implemented caching strategies
-- **Data points**: Movies, cast, crew, images, trailers
+"This product uses the TMDb API but is not endorsed or certified by TMDb."
 
-### Legal Compliance
+### Rate Limiting
 
-- ✅ Only metadata from TMDb (no pirated content)
-- ✅ Public domain movies from Internet Archive
-- ✅ Links to legal streaming services
-- ✅ Proper content moderation
+- Implemented proper caching strategies
+- Respectful API usage following TMDb guidelines
+- Client-side caching for optimal performance
 
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
 
+1. **Deploy to Vercel:**
+
 ```bash
 # Deploy to Vercel
 vercel deploy
-
-# Set environment variables in Vercel Dashboard
-# Connect Supabase production instance
 ```
 
-### Environment Setup
+2. **Set environment variables in Vercel Dashboard:**
 
-- **Production Supabase** instance
-- **TMDb API** production keys
-- **Vercel Analytics** for monitoring
-- **Sentry** for error tracking
+```env
+TMDB_API_KEY=your_tmdb_api_key
+TMDB_ACCESS_TOKEN=your_tmdb_access_token
+```
+
+3. **Configure domain and settings as needed**
+
+### Other Platforms
+
+The app can be deployed to any platform that supports Next.js:
+
+- **Netlify**: Add build command `bun build` and publish directory `out`
+- **Railway**: Connect your GitHub repository and deploy
+- **DigitalOcean App Platform**: Use the Next.js template
 
 ## 🎯 Roadmap
 
-### Phase 1 ✅
+### Phase 1 ✅ (Current)
 
 - [x] Next.js 15 setup with App Router
-- [x] Supabase integration
 - [x] TMDb API integration
-- [x] Basic UI components
-- [x] Authentication system
+- [x] Movie search and discovery
+- [x] Genre-based browsing
+- [x] Movie detail pages with trailers
+- [x] Responsive UI with Tailwind CSS
+- [x] Dark/Light theme support
+- [x] TypeScript implementation
 
-### Phase 2 🚧
+### Phase 2 🚧 (In Progress)
 
-- [ ] Movie search and discovery
-- [ ] Watchlist management
-- [ ] User profiles and reviews
-- [ ] Recommendation engine
-- [ ] Social features
+- [ ] Enhanced search with filters
+- [ ] Watch providers integration
+- [ ] Movie recommendations
+- [ ] Performance optimizations
+- [ ] SEO improvements
 
-### Phase 3 📋
+### Phase 3 📋 (Planned)
+
+- [ ] Supabase integration for user data
+- [ ] User authentication and profiles
+- [ ] Personal watchlists
+- [ ] User ratings and reviews
+- [ ] Social features (following, sharing)
+- [ ] Personalized recommendations
+- [ ] PWA features
+
+### Phase 4 🌟 (Future)
 
 - [ ] AI-powered recommendations
-- [ ] Real-time chat
-- [ ] PWA features
 - [ ] Mobile app companion
 - [ ] Advanced analytics
+- [ ] Community features
+- [ ] Content moderation tools
 
 ## 🤝 Contributing
 
@@ -240,10 +269,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **TMDb** for movie data API
-- **Supabase** for backend infrastructure
-- **Vercel** for hosting platform
-- **shadcn/ui** for component library
+- **TMDb** for comprehensive movie data API
+- **Vercel** for hosting and deployment platform
+- **Radix UI** for accessible component primitives
+- **Tailwind CSS** for utility-first styling
+- **Next.js team** for the excellent React framework
+- **Bun** for fast runtime and package management
 
 ---
 
