@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { TMDbMovie } from '@/types/tmdb';
+import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 
 interface SearchSuggestionsProps {
@@ -46,7 +47,7 @@ export function SearchSuggestions({
     >
       {isLoading && (
         <div className="text-muted-foreground p-4 text-center">
-          <div className="border-primary mx-auto h-4 w-4 animate-spin rounded-full border-b-2"></div>
+          <Spinner size="sm" className="mx-auto" />
           <span className="mt-2 block text-sm">Searching...</span>
         </div>
       )}

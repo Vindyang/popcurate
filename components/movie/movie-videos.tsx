@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { TMDbVideos, TMDbVideo } from '@/types/tmdb';
 
 interface MovieVideosProps {
@@ -140,9 +141,9 @@ export function MovieVideos({ movieId }: MovieVideosProps) {
         </h3>
         <div className="flex gap-4 overflow-x-auto pb-4">
           {[...Array(3)].map((_, i) => (
-            <div
+            <Skeleton
               key={i}
-              className="bg-muted aspect-video w-64 flex-shrink-0 animate-pulse rounded-lg md:w-72"
+              className="aspect-video w-64 flex-shrink-0 md:w-72"
             />
           ))}
         </div>

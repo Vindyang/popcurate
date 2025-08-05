@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { MovieCard } from '@/components/movie/movie-card';
+import { GenreSelector } from '@/components/movie/genre-selector';
 import { tmdbClient } from '@/lib/tmdb/client';
 import type { TMDbMovie } from '@/types/tmdb';
 
@@ -26,15 +28,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Column - Featured Movie or Showcase */}
+            {/* Right Column - Genre Selector */}
             <div className="relative">
-              <div className="from-primary/10 to-secondary/10 aspect-[4/3] rounded-2xl bg-gradient-to-br p-8">
-                <div className="flex h-full flex-col justify-center space-y-4 text-center">
-                  <h3 className="text-xl font-semibold">Millions of Movies</h3>
-                  <p className="text-muted-foreground">
-                    From blockbusters to indie gems
-                  </p>
-                </div>
+              <div className="from-primary/10 to-secondary/10 aspect-[4/3] rounded-2xl bg-gradient-to-br p-6">
+                <GenreSelector />
               </div>
             </div>
           </div>
@@ -150,10 +147,7 @@ async function MovieSection({
             ))
           : // Fallback placeholders if no movies or error
             Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="bg-muted aspect-[2/3] animate-pulse rounded-lg"
-              />
+              <Skeleton key={i} className="aspect-[2/3]" />
             ))}
       </div>
     </section>

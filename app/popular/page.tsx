@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import { MovieCard } from '@/components/movie/movie-card';
 import { tmdbClient } from '@/lib/tmdb/client';
 import type { TMDbMovie } from '@/types/tmdb';
@@ -38,10 +39,7 @@ export default async function PopularPage() {
             ))
           : // Fallback placeholders if no movies or error
             Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={i}
-                className="bg-muted aspect-[2/3] animate-pulse rounded-lg"
-              />
+              <Skeleton key={i} className="aspect-[2/3]" />
             ))}
       </div>
 

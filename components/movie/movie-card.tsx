@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { StarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarFilledIcon } from '@heroicons/react/24/solid';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   getImageUrl,
   formatRating,
@@ -132,10 +133,10 @@ export function MovieGrid({
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {Array.from({ length: 12 }).map((_, i) => (
           <div key={i} className="space-y-3">
-            <div className="bg-muted aspect-[2/3] animate-pulse rounded-lg" />
+            <Skeleton className="aspect-[2/3]" />
             <div className="space-y-2">
-              <div className="bg-muted h-4 animate-pulse rounded" />
-              <div className="bg-muted h-3 w-2/3 animate-pulse rounded" />
+              <Skeleton className="h-4" />
+              <Skeleton className="h-3 w-2/3" />
             </div>
           </div>
         ))}
