@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { SearchBar } from '@/components/movie/search-bar';
 import {
   MagnifyingGlassIcon,
   SunIcon,
@@ -12,19 +12,9 @@ import {
   FilmIcon,
   BookmarkIcon,
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      // Navigate to search results
-      window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
-    }
-  };
 
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
@@ -36,21 +26,7 @@ export function Header() {
         </Link>
 
         {/* Search Bar */}
-        <form
-          onSubmit={handleSearch}
-          className="mx-8 hidden max-w-md flex-1 md:flex"
-        >
-          <div className="relative w-full">
-            <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              type="search"
-              placeholder="Search movies..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-4 pl-10"
-            />
-          </div>
-        </form>
+        <SearchBar className="mx-8 hidden max-w-md flex-1 md:block" />
 
         {/* Navigation & Actions */}
         <div className="flex items-center space-x-4">
@@ -104,18 +80,7 @@ export function Header() {
 
       {/* Mobile Search Bar */}
       <div className="bg-background border-t px-4 py-3 md:hidden">
-        <form onSubmit={handleSearch}>
-          <div className="relative">
-            <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              type="search"
-              placeholder="Search movies..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-4 pl-10"
-            />
-          </div>
-        </form>
+        <SearchBar />
       </div>
     </header>
   );
