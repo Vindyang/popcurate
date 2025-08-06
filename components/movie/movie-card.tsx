@@ -36,19 +36,21 @@ export function MovieCard({
 
   const slug = generateMovieSlug(movie.title, year || 2024, movieId);
 
+
+  // Make the card take full width/height of grid cell
   const sizeClasses = {
-    sm: 'w-32',
-    md: 'w-40',
-    lg: 'w-48',
+    sm: 'w-full',
+    md: 'w-full',
+    lg: 'w-full',
   };
 
   return (
-    <Link href={`/movie/${slug}`} className="group block">
+    <Link href={`/movie/${slug}`} className="group block h-full">
       <div
-        className={`${sizeClasses[size]} transition-transform group-hover:scale-105`}
+        className={`${sizeClasses[size]} h-full flex flex-col transition-transform group-hover:scale-105`}
       >
         {/* Movie Poster */}
-        <div className="bg-muted relative mb-3 aspect-[2/3] overflow-hidden rounded-lg shadow-sm">
+        <div className="bg-muted relative mb-3 aspect-[2/3] overflow-hidden rounded-lg shadow-sm flex items-center justify-center w-full">
           {movie.poster_path ? (
             <Image
               src={getImageUrl(
@@ -57,11 +59,11 @@ export function MovieCard({
               )}
               alt={movie.title}
               fill
-              className="object-cover transition-opacity group-hover:opacity-90"
+              className="object-cover object-center transition-opacity group-hover:opacity-90"
               sizes="(max-width: 768px) 160px, (max-width: 1200px) 200px, 240px"
             />
           ) : (
-            <div className="bg-muted flex h-full items-center justify-center">
+            <div className="bg-muted flex h-full w-full items-center justify-center">
               <span className="text-muted-foreground text-4xl">🎬</span>
             </div>
           )}
@@ -76,7 +78,7 @@ export function MovieCard({
         </div>
 
         {/* Movie Info */}
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1 flex flex-col justify-between">
           <h3 className="group-hover:text-primary line-clamp-2 h-10 text-sm font-medium transition-colors">
             {movie.title}
           </h3>
