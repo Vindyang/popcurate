@@ -1,25 +1,26 @@
 @import 'tailwindcss';
 
 :root {
-  --background: 0 0% 0%;
-  --foreground: 0 0% 100%;
-  --card: 0 0% 0%;
-  --card-foreground: 0 0% 100%;
-  --popover: 0 0% 0%;
-  --popover-foreground: 0 0% 100%;
-  --primary: 0 0% 100%;
-  --primary-foreground: 0 0% 0%;
-  --secondary: 0 0% 10%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 0 0% 10%;
-  --muted-foreground: 0 0% 70%;
-  --accent: 0 0% 10%;
-  --accent-foreground: 0 0% 100%;
-  --destructive: 0 0% 100%;
-  --destructive-foreground: 0 0% 0%;
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 0 0% 100%;
+  /* Light mode colors */
+  --background: 0 0% 100%; /* white */
+  --foreground: 240 10% 10%; /* near-black */
+  --card: 0 0% 98%; /* very light gray */
+  --card-foreground: 240 10% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 10%;
+  --primary: 240 100% 60%; /* blue */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 20% 95%; /* light gray-blue */
+  --secondary-foreground: 240 10% 10%;
+  --muted: 240 20% 90%;
+  --muted-foreground: 240 10% 40%;
+  --accent: 48 100% 90%; /* light yellow */
+  --accent-foreground: 240 10% 10%;
+  --destructive: 0 100% 90%; /* light red */
+  --destructive-foreground: 0 80% 30%;
+  --border: 240 10% 90%;
+  --input: 240 10% 90%;
+  --ring: 240 100% 60%;
   --radius: 0.5rem;
 }
 
@@ -43,31 +44,6 @@
   --border: 0 0% 20%;
   --input: 0 0% 20%;
   --ring: 0 0% 100%;
-}
-
-@theme {
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --radius: var(--radius);
 }
 
 * {
@@ -99,9 +75,6 @@ body {
 }
 
 /* Custom focus styles */
-.focus-ring {
-  @apply focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
-}
 
 /* Animation classes */
 .animate-in {
