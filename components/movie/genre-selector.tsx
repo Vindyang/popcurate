@@ -235,6 +235,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
                       size="sm"
                       showRating={true}
                       showYear={true}
+                      openInNewTab={true}
                     />
                   ))}
                 </div>

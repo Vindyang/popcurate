@@ -13,12 +13,14 @@ import {
 import type { Movie } from '@/types/app';
 import type { TMDbMovie } from '@/types/tmdb';
 
+
 interface MovieCardProps {
   movie: Movie | TMDbMovie;
   showRating?: boolean;
   showYear?: boolean;
   showRuntime?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  openInNewTab?: boolean;
 }
 
 export function MovieCard({
@@ -27,6 +29,7 @@ export function MovieCard({
   showYear = true,
   showRuntime = false,
   size = 'md',
+  openInNewTab = false,
 }: MovieCardProps) {
   // Handle both Movie and TMDbMovie types
   const movieId = 'tmdb_id' in movie ? movie.tmdb_id : movie.id;
@@ -44,7 +47,11 @@ export function MovieCard({
   };
 
   return (
-    <Link href={`/movie/${slug}`} className="group block h-full">
+    <Link
+      href={`/movie/${slug}`}
+      className="group block h-full"
+      {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
       <div
         className={`${sizeClasses[size]} flex h-full flex-col transition-transform group-hover:scale-105`}
       >
