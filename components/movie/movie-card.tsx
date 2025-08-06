@@ -13,7 +13,6 @@ import {
 import type { Movie } from '@/types/app';
 import type { TMDbMovie } from '@/types/tmdb';
 
-
 interface MovieCardProps {
   movie: Movie | TMDbMovie;
   showRating?: boolean;
@@ -50,7 +49,9 @@ export function MovieCard({
     <Link
       href={`/movie/${slug}`}
       className="group block h-full"
-      {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      {...(openInNewTab
+        ? { target: '_blank', rel: 'noopener noreferrer' }
+        : {})}
     >
       <div
         className={`${sizeClasses[size]} flex h-full flex-col transition-transform group-hover:scale-105`}
