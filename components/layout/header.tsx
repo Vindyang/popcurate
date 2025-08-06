@@ -13,7 +13,6 @@ import {
   BookmarkIcon,
 } from '@heroicons/react/24/outline';
 
-
 import { useEffect, useState } from 'react';
 
 export function Header() {
@@ -22,6 +21,10 @@ export function Header() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Dynamically set highlight color based on theme
+  const highlightColor =
+    theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200';
 
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
@@ -61,18 +64,21 @@ export function Header() {
           </nav>
 
           {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            aria-label="Toggle theme"
-          >
-            {mounted && (theme === 'dark' ? (
-              <MoonIcon className="h-5 w-5" />
-            ) : (
-              <SunIcon className="h-5 w-5 scale-125" />
-            ))}
-          </Button>
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label="Toggle theme"
+              className={`group focus-visible:ring-primary cursor-pointer transition-colors focus-visible:ring-2 ${highlightColor}`}
+            >
+              {theme === 'dark' ? (
+                <MoonIcon className="text-primary h-5 w-5 transition-colors" />
+              ) : (
+                <SunIcon className="text-primary h-5 w-5 scale-125 transition-colors" />
+              )}
+            </Button>
+          )}
 
           {/* User Menu */}
           <Button variant="ghost" size="icon">
