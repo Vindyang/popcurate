@@ -36,7 +36,6 @@ export function MovieCard({
 
   const slug = generateMovieSlug(movie.title, year || 2024, movieId);
 
-
   // Make the card take full width/height of grid cell
   const sizeClasses = {
     sm: 'w-full',
@@ -47,10 +46,10 @@ export function MovieCard({
   return (
     <Link href={`/movie/${slug}`} className="group block h-full">
       <div
-        className={`${sizeClasses[size]} h-full flex flex-col transition-transform group-hover:scale-105`}
+        className={`${sizeClasses[size]} flex h-full flex-col transition-transform group-hover:scale-105`}
       >
         {/* Movie Poster */}
-        <div className="bg-muted relative mb-3 aspect-[2/3] overflow-hidden rounded-lg shadow-sm flex items-center justify-center w-full">
+        <div className="bg-muted relative mb-3 flex aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg shadow-sm">
           {movie.poster_path ? (
             <Image
               src={getImageUrl(
@@ -78,7 +77,7 @@ export function MovieCard({
         </div>
 
         {/* Movie Info */}
-        <div className="space-y-2 flex-1 flex flex-col justify-between">
+        <div className="flex flex-1 flex-col justify-between space-y-2">
           <h3 className="group-hover:text-primary line-clamp-2 h-10 text-sm font-medium transition-colors">
             {movie.title}
           </h3>
