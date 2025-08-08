@@ -37,6 +37,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <hr className="my-8 border-t border-gray-700" />
 
       {/* Featured Movies Sections */}
       <section className="py-12">

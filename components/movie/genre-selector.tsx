@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 import { MovieCard } from '@/components/movie/movie-card';
 import {
   Dialog,
@@ -150,7 +151,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
   }
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <Card className={`space-y-6 rounded-xl bg-black shadow-sm ${className}`}>
       {/* Header */}
       <div className="text-center">
         <h3 className="mb-2 text-xl font-semibold">Find Your Next Movie</h3>
@@ -170,7 +171,11 @@ export function GenreSelector({ className }: GenreSelectorProps) {
                 variant={isSelected ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => toggleGenre(genre)}
-                className="rounded-full"
+                className={`rounded-full transition-colors duration-150 ${
+                  isSelected
+                    ? 'border border-gray-300 bg-white text-black shadow-sm'
+                    : ''
+                }`}
               >
                 {genre.name}
               </Button>
@@ -184,7 +189,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
             <Button
               onClick={handleGoClick}
               size="lg"
-              className="px-8 py-2 text-base font-semibold"
+              className="border border-gray-300 bg-white px-8 py-2 text-base font-semibold text-black shadow-sm transition-colors duration-150 hover:bg-gray-100"
             >
               Go ({selectedGenres.length} genre
               {selectedGenres.length > 1 ? 's' : ''})
@@ -195,7 +200,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
 
       {/* Dialog Modal */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+        <DialogContent className="bg-opacity-90 max-h-[90vh] max-w-4xl overflow-y-auto bg-black">
           <DialogHeader>
             <DialogTitle>
               {loading
@@ -280,6 +285,6 @@ export function GenreSelector({ className }: GenreSelectorProps) {
             )}
         </DialogContent>
       </Dialog>
-    </div>
+    </Card>
   );
 }

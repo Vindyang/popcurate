@@ -50,7 +50,10 @@ export default async function MovieDetailPage({ params }: PageProps) {
       <div className="container mx-auto max-w-6xl px-4 py-8">
         {/* Back Button */}
         <Link href="/">
-          <Button variant="ghost" className="mb-6">
+          <Button
+            variant="ghost"
+            className="mb-6 cursor-pointer border border-gray-300"
+          >
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Back to Home
           </Button>

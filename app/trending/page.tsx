@@ -35,10 +35,26 @@ export default async function TrendingPage({
 
       {/* Time Window Toggle */}
       <div className="mb-8 flex gap-2">
-        <Button variant={timeWindow === 'week' ? 'default' : 'outline'} asChild>
+        <Button
+          variant={timeWindow === 'week' ? 'default' : 'outline'}
+          asChild
+          className={
+            timeWindow === 'week'
+              ? 'border border-gray-300 bg-white text-black shadow-sm transition-colors duration-150'
+              : ''
+          }
+        >
           <a href="?time_window=week">This Week</a>
         </Button>
-        <Button variant={timeWindow === 'day' ? 'default' : 'outline'} asChild>
+        <Button
+          variant={timeWindow === 'day' ? 'default' : 'outline'}
+          asChild
+          className={
+            timeWindow === 'day'
+              ? 'border border-gray-300 bg-white text-black shadow-sm transition-colors duration-150'
+              : ''
+          }
+        >
           <a href="?time_window=day">Today</a>
         </Button>
       </div>
