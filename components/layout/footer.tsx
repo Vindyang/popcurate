@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FilmIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { FilmIcon } from '@heroicons/react/24/outline';
 import { TMDbLogo } from '@/components/ui/tmdb-logo';
 
 export function Footer() {
@@ -157,8 +157,17 @@ export function Footer() {
 
             {/* Made with love */}
             <div className="text-muted-foreground flex items-center gap-1 text-xs">
-              <span>Made with</span>
-              <HeartIcon className="h-3 w-3 text-white" />
+              <span>Made by</span>
+              <span>
+                <Link
+                  href="https://github.com/Vindyang"
+                  className="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Vindyang
+                </Link>
+              </span>
               <span>for movie lovers</span>
             </div>
           </div>
