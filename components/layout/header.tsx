@@ -8,10 +8,10 @@ import {
   MagnifyingGlassIcon,
   SunIcon,
   MoonIcon,
-  UserIcon,
   FilmIcon,
   BookmarkIcon,
 } from '@heroicons/react/24/outline';
+import { NavUser } from '@/components/nav-user';
 
 import { useEffect, useState } from 'react';
 
@@ -81,10 +81,13 @@ export function Header() {
           )}
 
           {/* User Menu */}
-          <Button variant="ghost" size="icon">
-            <UserIcon className="h-5 w-5" />
-            <span className="sr-only">User menu</span>
-          </Button>
+          <NavUser
+            user={{
+              name: 'Demo User',
+              email: 'demo@example.com',
+              avatar: '/placeholder-movie.svg',
+            }}
+          />
 
           {/* Mobile Search Toggle */}
           <Button variant="ghost" size="icon" className="md:hidden">
