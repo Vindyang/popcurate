@@ -151,7 +151,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
   }
 
   return (
-    <Card className={`space-y-6 rounded-xl bg-black shadow-sm ${className}`}>
+    <Card className={`space-y-6 ${className}`}>
       {/* Header */}
       <div className="text-center">
         <h3 className="mb-2 text-xl font-semibold">Find Your Next Movie</h3>
@@ -173,7 +173,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
                 onClick={() => toggleGenre(genre)}
                 className={`rounded-full transition-colors duration-150 ${
                   isSelected
-                    ? 'border border-gray-300 bg-white text-black shadow-sm'
+                    ? 'border border-black bg-black text-white shadow-sm hover:bg-black/90 dark:border-white/30'
                     : ''
                 }`}
               >
@@ -189,7 +189,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
             <Button
               onClick={handleGoClick}
               size="lg"
-              className="border border-gray-300 bg-white px-8 py-2 text-base font-semibold text-black shadow-sm transition-colors duration-150 hover:bg-gray-100"
+              className="bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90"
             >
               Go ({selectedGenres.length} genre
               {selectedGenres.length > 1 ? 's' : ''})
@@ -200,7 +200,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
 
       {/* Dialog Modal */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-opacity-90 max-h-[90vh] max-w-4xl overflow-y-auto bg-black">
+        <DialogContent className="bg-card/90 max-h-[90vh] max-w-4xl overflow-y-auto dark:bg-black/90">
           <DialogHeader>
             <DialogTitle>
               {loading
