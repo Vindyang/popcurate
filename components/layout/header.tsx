@@ -1,5 +1,7 @@
 'use client';
-
+import { useEffect, useState } from 'react';
+import { authClient } from '@/lib/betterauth/auth-client';
+import { NavUser } from '@/components/nav-user';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
@@ -11,9 +13,6 @@ import {
   FilmIcon,
   BookmarkIcon,
 } from '@heroicons/react/24/outline';
-import { NavUser } from '@/components/nav-user';
-
-import { useEffect, useState } from 'react';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -80,14 +79,7 @@ export function Header() {
             </Button>
           )}
 
-          {/* User Menu */}
-          <NavUser
-            user={{
-              name: 'Demo User',
-              email: 'demo@example.com',
-              avatar: '/placeholder-movie.svg',
-            }}
-          />
+          <UserProfileClient />
 
           {/* Mobile Search Toggle */}
           <Button variant="ghost" size="icon" className="md:hidden">
@@ -102,5 +94,68 @@ export function Header() {
         <SearchBar />
       </div>
     </header>
+  );
+}
+
+/**
+ * Client component for user profile, replacing server-only UserProfileServer.
+ */
+function UserProfileClient() {
+  const [user, setUser] = useState<null | {
+    name: string;
+    email: string;
+    image?: string;
+  }>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    authClient.getSession().then((session) => {
+      if (mounted) {
+        // Handle both Data<{ user, session }> and Data<null>
+        if (session && 'user' in session) {
+          // Defensive: session.user may be unknown, so cast to expected shape
+          setUser(
+            session.user as { name: string; email: string; image?: string }
+          );
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        className="bg-muted h-8 w-8 animate-pulse rounded-lg"
+        aria-label="Loading user"
+      />
+    );
+  }
+
+  if (!user) {
+    return (
+      <Link
+        href="/auth/login"
+        className="text-primary bg-muted hover:bg-accent rounded-full px-4 py-2 font-medium transition-colors"
+      >
+        Sign in
+      </Link>
+    );
+  }
+
+  return (
+    <NavUser
+      user={{
+        name: user.name ?? 'User',
+        email: user.email ?? '',
+        avatar: user.image ?? '/avatars/user.jpg',
+      }}
+    />
   );
 }

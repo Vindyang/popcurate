@@ -18,35 +18,71 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useState } from 'react';
+import { authClient } from '@/lib/betterauth/auth-client';
+import { toast } from 'sonner';
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const formSchema = z.object({
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters long'),
-  });
+  const formSchema = z
+    .object({
+      email: z.string().email('Invalid email address'),
+      password: z
+        .string()
+        .min(6, 'Password must be at least 6 characters long'),
+      confirmPassword: z
+        .string()
+        .min(6, 'Password must be at least 6 characters long'),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: 'Passwords do not match',
+      path: ['confirmPassword'],
+    });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  async function onSubmit() {
-    setIsLoading(true);
-    // TODO: Integrate with Better Auth
-    try {
-      // await betterAuthClient.signUp();
-    } finally {
-      setIsLoading(false);
-    }
+  async function onSubmit(values: {
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }) {
+    const { email, password } = values;
+    // Derive name from email (before @)
+    const name = email.split('@')[0];
+    await authClient.signUp.email(
+      {
+        name: name,
+        email,
+        password,
+        callbackURL: '/',
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          toast.success('Account created successfully!');
+          setIsLoading(false);
+          window.location.href = '/';
+        },
+        onError: () => {
+          toast.error('Failed to create account');
+          setIsLoading(false);
+        },
+      }
+    );
   }
 
   return (
@@ -104,6 +140,42 @@ export function SignupForm({
                             }
                           >
                             {showPassword ? (
+                              <EyeOff size={20} />
+                            ) : (
+                              <Eye size={20} />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            placeholder="••••••••"
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            tabIndex={-1}
+                            className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500"
+                            onClick={() => setShowConfirmPassword((v) => !v)}
+                            aria-label={
+                              showConfirmPassword
+                                ? 'Hide password'
+                                : 'Show password'
+                            }
+                          >
+                            {showConfirmPassword ? (
                               <EyeOff size={20} />
                             ) : (
                               <Eye size={20} />

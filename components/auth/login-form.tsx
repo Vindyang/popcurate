@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
+import { authClient } from '@/lib/betterauth/auth-client';
 import { Eye, EyeOff } from 'lucide-react';
 
 import Image from 'next/image';
@@ -20,45 +21,52 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { toast } from 'sonner';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const formSchema = z
-    .object({
-      email: z.string().email('Invalid email address'),
-      password: z
-        .string()
-        .min(6, 'Password must be at least 6 characters long'),
-      confirmPassword: z
-        .string()
-        .min(6, 'Password must be at least 6 characters long'),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: 'Passwords do not match',
-      path: ['confirmPassword'],
-    });
+  const formSchema = z.object({
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters long'),
+  });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: '',
     },
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function onSubmit(values: {
-    email: string;
-    password: string;
-    confirmPassword: string;
-  }) {
-    // TODO: handle login
-    console.log(values);
+  async function onSubmit(values: { email: string; password: string }) {
+    const { email, password } = values;
+    await authClient.signIn.email(
+      {
+        email,
+        password,
+        callbackURL: '/',
+        rememberMe: false,
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          toast.success('Login successful! Redirecting...');
+          setIsLoading(false);
+          window.location.href = '/';
+        },
+        onError: (ctx) => {
+          toast.error('Failed to create account');
+          alert(ctx.error.message);
+        },
+      }
+    );
   }
 
   return (
@@ -133,42 +141,7 @@ export function LoginForm({
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            placeholder="••••••••"
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            {...field}
-                          />
-                          <button
-                            type="button"
-                            tabIndex={-1}
-                            className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500"
-                            onClick={() => setShowConfirmPassword((v) => !v)}
-                            aria-label={
-                              showConfirmPassword
-                                ? 'Hide password'
-                                : 'Show password'
-                            }
-                          >
-                            {showConfirmPassword ? (
-                              <EyeOff size={20} />
-                            ) : (
-                              <Eye size={20} />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
                 <Button
                   type="submit"
                   className="w-full bg-white text-black hover:bg-gray-100"

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from 'lucide-react';
+import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -19,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import Image from 'next/image';
 
 /**
  * Lightweight user dropdown that does NOT depend on SidebarProvider.
@@ -40,16 +34,9 @@ export function NavUser({
           className="hover:bg-muted focus-visible:ring-ring flex items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
           aria-label="User menu"
         >
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback>
-              {user.name
-                .split(' ')
-                .map((p) => p[0])
-                .join('')
-                .slice(0, 2)
-                .toUpperCase()}
-            </AvatarFallback>
+          <Avatar className="h-8 w-8 rounded-lg">
+            <AvatarImage src={'/avatars/user.jpg'} alt={user.name} />
+            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
@@ -61,16 +48,9 @@ export function NavUser({
       >
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>
-                {user.name
-                  .split(' ')
-                  .map((p) => p[0])
-                  .join('')
-                  .slice(0, 2)
-                  .toUpperCase()}
-              </AvatarFallback>
+            <Avatar className="h-8 w-8 rounded-lg">
+              <AvatarImage src={'/avatars/user.jpg'} alt={user.name} />
+              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left leading-tight">
               <span className="truncate font-medium">{user.name}</span>
