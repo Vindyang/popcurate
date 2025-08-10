@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Image from 'next/image';
+import { User } from 'lucide-react';
 
 /**
  * Lightweight user dropdown that does NOT depend on SidebarProvider.
@@ -36,7 +36,9 @@ export function NavUser({
         >
           <Avatar className="h-8 w-8 rounded-lg">
             <AvatarImage src={'/avatars/user.jpg'} alt={user.name} />
-            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            <AvatarFallback className="rounded-lg">
+              <User />
+            </AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>

@@ -1,30 +1,12 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { authClient } from '@/lib/betterauth/auth-client';
-import { NavUser } from '@/components/nav-user';
+// Header (Server Component) - Next.js App Router best-practice
+
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
-import { Button } from '@/components/ui/button';
+import { FilmIcon, BookmarkIcon } from '@heroicons/react/24/outline';
+import UserProfileServer from '@/components/auth/user-profile-server';
+import ThemeToggle from '@/components/layout/theme-toggle-client';
 import { SearchBar } from '@/components/movie/search-bar';
-import {
-  MagnifyingGlassIcon,
-  SunIcon,
-  MoonIcon,
-  FilmIcon,
-  BookmarkIcon,
-} from '@heroicons/react/24/outline';
 
 export function Header() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Dynamically set highlight color based on theme
-  const highlightColor =
-    theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200';
-
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -63,29 +45,10 @@ export function Header() {
           </nav>
 
           {/* Theme Toggle */}
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              aria-label="Toggle theme"
-              className={`group focus-visible:ring-primary cursor-pointer transition-colors focus-visible:ring-2 ${highlightColor}`}
-            >
-              {theme === 'dark' ? (
-                <MoonIcon className="text-primary h-5 w-5 transition-colors" />
-              ) : (
-                <SunIcon className="text-primary h-5 w-5 scale-125 transition-colors" />
-              )}
-            </Button>
-          )}
+          <ThemeToggle />
 
-          <UserProfileClient />
-
-          {/* Mobile Search Toggle */}
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <MagnifyingGlassIcon className="h-5 w-5" />
-            <span className="sr-only">Search</span>
-          </Button>
+          {/* User Profile (server session fetch) */}
+          <UserProfileServer />
         </div>
       </div>
 
@@ -94,68 +57,5 @@ export function Header() {
         <SearchBar />
       </div>
     </header>
-  );
-}
-
-/**
- * Client component for user profile, replacing server-only UserProfileServer.
- */
-function UserProfileClient() {
-  const [user, setUser] = useState<null | {
-    name: string;
-    email: string;
-    image?: string;
-  }>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-    authClient.getSession().then((session) => {
-      if (mounted) {
-        // Handle both Data<{ user, session }> and Data<null>
-        if (session && 'user' in session) {
-          // Defensive: session.user may be unknown, so cast to expected shape
-          setUser(
-            session.user as { name: string; email: string; image?: string }
-          );
-        } else {
-          setUser(null);
-        }
-        setLoading(false);
-      }
-    });
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  if (loading) {
-    return (
-      <div
-        className="bg-muted h-8 w-8 animate-pulse rounded-lg"
-        aria-label="Loading user"
-      />
-    );
-  }
-
-  if (!user) {
-    return (
-      <Link
-        href="/auth/login"
-        className="text-primary bg-muted hover:bg-accent rounded-full px-4 py-2 font-medium transition-colors"
-      >
-        Sign in
-      </Link>
-    );
-  }
-
-  return (
-    <NavUser
-      user={{
-        name: user.name ?? 'User',
-        email: user.email ?? '',
-        avatar: user.image ?? '/avatars/user.jpg',
-      }}
-    />
   );
 }

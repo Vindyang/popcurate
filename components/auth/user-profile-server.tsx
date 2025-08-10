@@ -1,3 +1,4 @@
+'use server';
 import { headers } from 'next/headers';
 import { auth } from '@/auth';
 import { NavUser } from '@/components/nav-user';
