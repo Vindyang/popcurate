@@ -77,8 +77,8 @@ export function SignupForm({
           setIsLoading(false);
           window.location.href = '/';
         },
-        onError: () => {
-          toast.error('Failed to create account');
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
           setIsLoading(false);
         },
       }

@@ -61,8 +61,8 @@ export function LoginForm({
           setIsLoading(false);
           window.location.href = '/';
         },
-        onError: () => {
-          toast.error('Failed to log in');
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
         },
       }
     );
