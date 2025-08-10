@@ -35,6 +35,9 @@ export function NavUser({
         onSuccess: () => {
           router.push('/auth/login');
         },
+        onError: (error) => {
+          console.error('Logout failed:', error);
+        },
       },
     });
   };

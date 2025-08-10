@@ -9,4 +9,8 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  trustedOrigins: [
+    'http://popcurate.vercel.app',
+    'https://popcurate.vercel.app',
+  ],
 });
