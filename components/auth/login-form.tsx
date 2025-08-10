@@ -41,7 +41,7 @@ export function LoginForm({
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   async function onSubmit(values: { email: string; password: string }) {
     const { email, password } = values;

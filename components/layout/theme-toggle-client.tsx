@@ -13,8 +13,8 @@ export default function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  const highlightColor =
-    theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200';
+  // const highlightColor =
+  //   theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200';
 
   if (!mounted) return null;
 
