@@ -24,7 +24,7 @@ export default function ThemeToggle() {
       size="icon"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       aria-label="Toggle theme"
-      className={`group focus-visible:ring-primary cursor-pointer transition-colors focus-visible:ring-2 ${highlightColor}`}
+      className="group text-muted-foreground hover:text-foreground focus-visible:ring-primary cursor-pointer transition-colors focus-visible:ring-2"
     >
       {theme === 'dark' ? (
         <MoonIcon className="text-primary h-5 w-5 transition-colors" />

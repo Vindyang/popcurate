@@ -173,7 +173,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
                 onClick={() => toggleGenre(genre)}
                 className={`rounded-full transition-colors duration-150 ${
                   isSelected
-                    ? 'border border-black bg-black text-white shadow-sm hover:bg-black/90 dark:border-white/30'
+                    ? 'border border-black bg-black text-white shadow-sm hover:bg-black/90 dark:border-white dark:bg-white dark:text-black dark:hover:bg-white/90'
                     : ''
                 }`}
               >
@@ -189,7 +189,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
             <Button
               onClick={handleGoClick}
               size="lg"
-              className="bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90"
+              className="bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
             >
               Go ({selectedGenres.length} genre
               {selectedGenres.length > 1 ? 's' : ''})

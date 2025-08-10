@@ -31,7 +31,7 @@ export function NavUser({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="hover:bg-muted focus-visible:ring-ring flex items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          className="text-muted-foreground hover:text-foreground focus-visible:ring-primary flex items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
           aria-label="User menu"
         >
           <Avatar className="h-8 w-8 rounded-lg">
@@ -52,7 +52,9 @@ export function NavUser({
           <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage src={'/avatars/user.jpg'} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarFallback className="rounded-lg">
+                <User />
+              </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left leading-tight">
               <span className="truncate font-medium">{user.name}</span>
