@@ -13,7 +13,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { User } from 'lucide-react';
-
+import { useRouter } from 'next/navigation';
+import { authClient } from '@/lib/betterauth/auth-client';
 /**
  * Lightweight user dropdown that does NOT depend on SidebarProvider.
  */
@@ -26,6 +27,18 @@ export function NavUser({
     avatar: string;
   };
 }) {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push('/auth/login');
+        },
+      },
+    });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -87,7 +100,7 @@ export function NavUser({
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>
