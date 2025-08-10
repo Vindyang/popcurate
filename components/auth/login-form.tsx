@@ -61,9 +61,8 @@ export function LoginForm({
           setIsLoading(false);
           window.location.href = '/';
         },
-        onError: (ctx) => {
-          toast.error('Failed to create account');
-          alert(ctx.error.message);
+        onError: () => {
+          toast.error('Failed to log in');
         },
       }
     );
