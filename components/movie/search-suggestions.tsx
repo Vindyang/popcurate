@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { TMDbMovie } from '@/types/tmdb';
 import { Spinner } from '@/components/ui/spinner';
-import { cn } from '@/lib/utils';
+import { cn, formatRating } from '@/lib/utils';
 
 interface SearchSuggestionsProps {
   suggestions: TMDbMovie[];
@@ -90,7 +90,7 @@ export function SearchSuggestions({
                   {movie.vote_average > 0 && (
                     <div className="mt-1 flex items-center">
                       <span className="text-muted-foreground text-xs">
-                        ⭐ {movie.vote_average.toFixed(1)}
+                        ⭐ {formatRating(movie.vote_average)}
                       </span>
                     </div>
                   )}

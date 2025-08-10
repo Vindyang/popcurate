@@ -25,7 +25,8 @@ export function formatRuntime(minutes: number): string {
 }
 
 export function formatRating(rating: number): string {
-  return (rating / 10).toFixed(1);
+  // Convert decimal rating (e.g., 7.8) to percentage (e.g., 78%)
+  return `${Math.round(rating * 10)}%`;
 }
 
 export function getImageUrl(
