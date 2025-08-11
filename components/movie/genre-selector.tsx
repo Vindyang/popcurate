@@ -157,7 +157,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
         <h3 className="mb-2 text-xl font-semibold md:text-3xl">
           Find Your Next Movie
         </h3>
-        <p className="text-muted-foreground mb-6 text-base md:text-2xl">
+        <p className="text-muted-foreground mb-6 text-base md:text-lg">
           Pick genres and discover something amazing to watch
         </p>
       </div>
@@ -191,7 +191,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
             <Button
               onClick={handleGoClick}
               size="lg"
-              className="lg:rounde bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90 md:rounded-xl md:px-12 md:py-8 md:text-xl lg:px-12 lg:py-6 lg:text-base dark:bg-white dark:text-black dark:hover:bg-white/90"
+              className="lg:rounde bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90 md:rounded-xl md:px-12 md:py-8 md:text-xl lg:px-10 lg:py-6 lg:text-base dark:bg-white dark:text-black dark:hover:bg-white/90"
             >
               Go ({selectedGenres.length} genre
               {selectedGenres.length > 1 ? 's' : ''})
