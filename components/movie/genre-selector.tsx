@@ -151,7 +151,9 @@ export function GenreSelector({ className }: GenreSelectorProps) {
   }
 
   return (
-    <Card className={`space-y-6 ${className}`}>
+    <Card
+      className={`space-y-6 rounded-2xl border p-4 ${className} md:border-4 md:p-8`}
+    >
       {/* Header */}
       <div className="text-center">
         <h3 className="mb-2 text-xl font-semibold">Find Your Next Movie</h3>
@@ -171,11 +173,11 @@ export function GenreSelector({ className }: GenreSelectorProps) {
                 variant={isSelected ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => toggleGenre(genre)}
-                className={`rounded-full transition-colors duration-150 ${
+                className={`h-9 rounded-full px-4 text-sm transition-colors duration-150 md:h-12 md:border-2 md:px-8 md:text-lg lg:h-9 lg:border lg:px-4 lg:text-sm ${
                   isSelected
                     ? 'border border-black bg-black text-white shadow-sm hover:bg-black/90 dark:border-white dark:bg-white dark:text-black dark:hover:bg-white/90'
                     : ''
-                }`}
+                } `}
               >
                 {genre.name}
               </Button>
@@ -189,7 +191,7 @@ export function GenreSelector({ className }: GenreSelectorProps) {
             <Button
               onClick={handleGoClick}
               size="lg"
-              className="bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
+              className="lg:rounde bg-black px-8 py-2 text-base font-semibold text-white shadow-sm transition-colors duration-150 hover:bg-black/90 md:rounded-xl md:px-12 md:py-8 md:text-xl lg:px-12 lg:py-6 lg:text-base dark:bg-white dark:text-black dark:hover:bg-white/90"
             >
               Go ({selectedGenres.length} genre
               {selectedGenres.length > 1 ? 's' : ''})
