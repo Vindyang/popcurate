@@ -135,15 +135,13 @@ export function GenreSelector({ className }: GenreSelectorProps) {
   if (genresLoading) {
     return (
       <div className={`space-y-6 ${className}`}>
-        <div className="text-center">
-          <h3 className="mb-2 text-xl font-semibold">Find Your Next Movie</h3>
-          <p className="text-muted-foreground mb-6">
-            Pick genres and discover something amazing to watch
-          </p>
+        <div className="mb-4 flex flex-col items-center space-y-3">
+          <Skeleton className="h-8 w-48 rounded-xl" />
+          <Skeleton className="h-5 w-64 rounded-lg" />
         </div>
-        <div className="flex flex-wrap justify-center gap-2">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className="h-9 w-20 rounded-full" />
+        <div className="flex flex-wrap justify-center gap-3">
+          {[80, 100, 72, 110, 90, 120, 85, 105].map((w, i) => (
+            <Skeleton key={i} className={`h-10 w-[${w}px] rounded-full`} />
           ))}
         </div>
       </div>
@@ -156,8 +154,10 @@ export function GenreSelector({ className }: GenreSelectorProps) {
     >
       {/* Header */}
       <div className="text-center">
-        <h3 className="mb-2 text-xl font-semibold">Find Your Next Movie</h3>
-        <p className="text-muted-foreground mb-6">
+        <h3 className="mb-2 text-xl font-semibold md:text-3xl">
+          Find Your Next Movie
+        </h3>
+        <p className="text-muted-foreground mb-6 text-base md:text-2xl">
           Pick genres and discover something amazing to watch
         </p>
       </div>
