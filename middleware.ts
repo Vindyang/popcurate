@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   // const session = await verifySession(request);
 
   // Next.js convention: check for a session cookie (replace with Better Auth's cookie name if different)
-  const session = request.cookies.get('betterauth_session');
+  const session = request.cookies.get('better-auth.session_token');
 
   if (!session) {
     // Redirect unauthenticated users to login page

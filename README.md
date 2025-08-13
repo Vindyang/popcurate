@@ -229,15 +229,7 @@ The app can be deployed to any platform that supports Next.js:
 - [x] Dark/Light theme support
 - [x] TypeScript implementation
 
-### Phase 2 🚧 (In Progress)
-
-- [ ] Enhanced search with filters
-- [ ] Watch providers integration
-- [ ] Movie recommendations
-- [ ] Performance optimizations
-- [ ] SEO improvements
-
-### Phase 3 📋 (Planned)
+### Phase 2 📋 (Planned)
 
 - [ ] Supabase integration for user data
 - [ ] User authentication and profiles
@@ -247,7 +239,7 @@ The app can be deployed to any platform that supports Next.js:
 - [ ] Personalized recommendations
 - [ ] PWA features
 
-### Phase 4 🌟 (Future)
+### Phase 3 🌟 (Future)
 
 - [ ] AI-powered recommendations
 - [ ] Mobile app companion

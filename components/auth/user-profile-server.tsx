@@ -1,6 +1,5 @@
 'use server';
-import { headers } from 'next/headers';
-import { auth } from '@/auth';
+import { getServerSession } from '@/lib/betterauth/get-session';
 import { NavUser } from '@/components/nav-user';
 import Link from 'next/link';
 
@@ -8,7 +7,7 @@ import Link from 'next/link';
  * Server component that fetches the current session and renders NavUser or Sign in button.
  */
 export default async function UserProfileServer() {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getServerSession();
   if (!session) {
     return (
       <Link

@@ -10,7 +10,6 @@ import {
 import { StarIcon as StarFilledIcon } from '@heroicons/react/24/solid';
 import { getImageUrl, formatRating, formatRuntime } from '@/lib/utils';
 import { tmdbClient } from '@/lib/tmdb/client';
-import { MovieVideos } from '@/components/movie/movie-videos';
 import { RelatedMovies } from '@/components/movie/related-movies';
 import { DetailedMovieInfo } from '@/components/movie/detailed-movie-info';
 import type { TMDbMovieDetails } from '@/types/tmdb';
@@ -18,6 +17,8 @@ import type { TMDbMovieDetails } from '@/types/tmdb';
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+import { MovieVideos } from '@/components/movie/movie-videos';
 
 export default async function MovieDetailPage({ params }: PageProps) {
   const { slug } = await params;
