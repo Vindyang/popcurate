@@ -20,6 +20,11 @@ interface MovieCardProps {
   showRuntime?: boolean;
   size?: 'sm' | 'md' | 'lg';
   openInNewTab?: boolean;
+  watchlist?: {
+    name: string;
+    description?: string | null;
+    created_at: string;
+  };
 }
 
 export function MovieCard({
@@ -29,6 +34,7 @@ export function MovieCard({
   showRuntime = false,
   size = 'md',
   openInNewTab = false,
+  watchlist,
 }: MovieCardProps) {
   // Handle both Movie and TMDbMovie types
   const movieId = 'tmdb_id' in movie ? movie.tmdb_id : movie.id;
@@ -115,6 +121,20 @@ export function MovieCard({
               )}
           </div>
         </div>
+        {/* Watchlist Info Section */}
+        {watchlist && (
+          <div className="bg-card border-muted mt-4 flex flex-col justify-between rounded-lg border p-4 shadow-sm transition-shadow hover:shadow-md">
+            <h3 className="mb-2 line-clamp-2 text-lg font-semibold">
+              {watchlist.name}
+            </h3>
+            <p className="text-muted-foreground line-clamp-3 text-sm">
+              {watchlist.description ?? 'No description.'}
+            </p>
+            <div className="text-muted-foreground mt-4 text-xs">
+              Created: {new Date(watchlist.created_at).toLocaleDateString()}
+            </div>
+          </div>
+        )}
       </div>
     </Link>
   );

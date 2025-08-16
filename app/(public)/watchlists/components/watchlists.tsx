@@ -4,8 +4,9 @@
 
 import { useState, useEffect } from 'react';
 import { fetchWatchlists } from '@/app/(public)/watchlists/action/componentactions';
-import { Card } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
+import { MovieCard } from '@/components/movie/movie-card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function Watchlists() {
   // Use a plain type for Watchlist to avoid import errors
@@ -18,16 +19,19 @@ export function Watchlists() {
     updated_at: string;
   };
   const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
+  const [movies, setMovies] = useState<
+    (import('@/types/app').Movie | import('@/types/tmdb').TMDbMovie)[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
-    async function loadWatchlists() {
+    async function loadWatchlistsAndMovies() {
       try {
         setLoading(true);
         const data = await fetchWatchlists();
-        if (isMounted)
+        if (isMounted) {
           setWatchlists(
             (data ?? []).map((wl) => ({
               ...wl,
@@ -35,6 +39,21 @@ export function Watchlists() {
               updated_at: wl.updated_at ? wl.updated_at.toString() : '',
             }))
           );
+          // Fetch movie details for each movie_id
+          const movieIds = (data ?? []).map((wl) => wl.movie_id);
+          const moviesFetched = await Promise.all(
+            movieIds.map(async (id) => {
+              try {
+                const res = await fetch(`/api/movies/${id}`);
+                if (!res.ok) return null;
+                return await res.json();
+              } catch {
+                return null;
+              }
+            })
+          );
+          setMovies(moviesFetched.filter(Boolean));
+        }
       } catch (err) {
         if (isMounted)
           setError(err instanceof Error ? err.message : 'Unknown error');
@@ -42,7 +61,7 @@ export function Watchlists() {
         if (isMounted) setLoading(false);
       }
     }
-    loadWatchlists();
+    loadWatchlistsAndMovies();
     return () => {
       isMounted = false;
     };
@@ -61,13 +80,21 @@ export function Watchlists() {
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="grid gap-6">
-      {watchlists.map((wl) => (
-        <Card key={wl.id} className="p-4">
-          <h2 className="text-xl font-semibold">{wl.name}</h2>
-          <p className="text-muted-foreground text-sm">{wl.description}</p>
-        </Card>
-      ))}
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      {movies.length > 0
+        ? movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              size="sm"
+              showRating={true}
+              showYear={true}
+            />
+          ))
+        : // Fallback placeholders if no movies or error
+          Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="aspect-[2/3]" />
+          ))}
     </div>
   );
 }

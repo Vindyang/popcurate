@@ -69,6 +69,7 @@ export const watchlists = pgTable('watchlists', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description'),
+  movie_id: integer('movie_id').notNull(),
   user_id: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),

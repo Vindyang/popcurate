@@ -24,6 +24,7 @@ export async function createWatchlist({
     id,
     name,
     description,
+    movie_id: Number(movie_id),
     user_id: userId,
     created_at: new Date(),
     updated_at: new Date(),

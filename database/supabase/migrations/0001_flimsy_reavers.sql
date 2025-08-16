@@ -1,0 +1,1 @@
+ALTER TABLE "watchlists" ADD COLUMN "movie_id" integer NOT NULL;
