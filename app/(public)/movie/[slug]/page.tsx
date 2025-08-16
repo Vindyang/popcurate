@@ -12,6 +12,7 @@ import { getImageUrl, formatRating, formatRuntime } from '@/lib/utils';
 import { tmdbClient } from '@/lib/tmdb/client';
 import { RelatedMovies } from '@/components/movie/related-movies';
 import { DetailedMovieInfo } from '@/components/movie/detailed-movie-info';
+import { AddToWatchlistButton } from '@/components/movie/add-to-watchlist-button';
 import type { TMDbMovieDetails } from '@/types/tmdb';
 
 interface PageProps {
@@ -92,26 +93,33 @@ export default async function MovieDetailPage({ params }: PageProps) {
                 </p>
               )}
 
-              <div className="text-muted-foreground flex flex-wrap gap-4 text-sm">
-                {year && (
-                  <div className="flex items-center gap-1">
-                    <CalendarIcon className="h-4 w-4" />
-                    <span>{year}</span>
-                  </div>
-                )}
-                {movie.runtime && (
-                  <div className="flex items-center gap-1">
-                    <ClockIcon className="h-4 w-4" />
-                    <span>{formatRuntime(movie.runtime)}</span>
-                  </div>
-                )}
-                {movie.vote_average > 0 && (
-                  <div className="flex items-center gap-1">
-                    <StarFilledIcon className="h-4 w-4 text-yellow-400" />
-                    <span>{formatRating(movie.vote_average)}</span>
-                    <span className="text-xs">({movie.vote_count} votes)</span>
-                  </div>
-                )}
+              <div className="text-muted-foreground flex items-center justify-between text-sm">
+                <div className="flex items-center gap-4">
+                  {year && (
+                    <div className="flex items-center gap-1">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span>{year}</span>
+                    </div>
+                  )}
+                  {movie.runtime && (
+                    <div className="flex items-center gap-1">
+                      <ClockIcon className="h-4 w-4" />
+                      <span>{formatRuntime(movie.runtime)}</span>
+                    </div>
+                  )}
+                  {movie.vote_average > 0 && (
+                    <div className="flex items-center gap-1">
+                      <StarFilledIcon className="h-4 w-4 text-yellow-400" />
+                      <span>{formatRating(movie.vote_average)}</span>
+                      <span className="text-xs">
+                        ({movie.vote_count} votes)
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex h-8 cursor-pointer items-center">
+                  <AddToWatchlistButton movieId={movieId} title={movie.title} />
+                </div>
               </div>
             </div>
 

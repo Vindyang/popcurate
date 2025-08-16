@@ -32,7 +32,7 @@ export function UserProfileForm({
   initialName: string;
   initialImage?: string;
 }) {
-  const [defaultName, setDefaultName] = useState(initialName || '');
+  const [, setDefaultName] = useState(initialName || '');
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {

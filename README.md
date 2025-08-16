@@ -231,8 +231,8 @@ The app can be deployed to any platform that supports Next.js:
 
 ### Phase 2 📋 (Planned)
 
-- [ ] Supabase integration for user data
-- [ ] User authentication and profiles
+- [x] Supabase integration for user data
+- [x] User authentication and profiles
 - [ ] Personal watchlists
 - [ ] User ratings and reviews
 - [ ] Social features (following, sharing)
