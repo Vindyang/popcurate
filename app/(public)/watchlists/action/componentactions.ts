@@ -19,12 +19,23 @@ export async function createWatchlist({
   if (!userId) {
     throw new Error('User session not found.');
   }
-  const id = `${userId}-${movie_id}`;
+  const movieIdNum = Number(movie_id);
+  const id = `${userId}-${movieIdNum}`;
+
+  // Check for duplicate
+  const existing = await db
+    .select()
+    .from(watchlists)
+    .where(eq(watchlists.id, id));
+  if (existing.length > 0) {
+    throw new Error('Movie already in watchlist.');
+  }
+
   return db.insert(watchlists).values({
     id,
     name,
     description,
-    movie_id: Number(movie_id),
+    movie_id: movieIdNum,
     user_id: userId,
     created_at: new Date(),
     updated_at: new Date(),
@@ -51,4 +62,28 @@ export async function fetchWatchlists() {
     .from(watchlists)
     .where(eq(watchlists.user_id, userId));
   return watchLists;
+}
+export async function isMovieInWatchlist(
+  movie_id: string | number
+): Promise<boolean> {
+  const session = await getServerSession();
+  const userId = session?.user?.id;
+  if (!userId) return false;
+  const movieIdNum = Number(movie_id);
+  const id = `${userId}-${movieIdNum}`;
+  const existing = await db
+    .select()
+    .from(watchlists)
+    .where(eq(watchlists.id, id));
+  return existing.length > 0;
+}
+export async function removeWatchlist(
+  movie_id: string | number
+): Promise<void> {
+  const session = await getServerSession();
+  const userId = session?.user?.id;
+  if (!userId) throw new Error('User session not found.');
+  const movieIdNum = Number(movie_id);
+  const id = `${userId}-${movieIdNum}`;
+  await db.delete(watchlists).where(eq(watchlists.id, id));
 }

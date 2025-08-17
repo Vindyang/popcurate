@@ -1,8 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { createWatchlist } from '@/app/(public)/watchlists/action/componentactions';
+import { toast } from 'sonner';
+import {
+  createWatchlist,
+  isMovieInWatchlist,
+  removeWatchlist,
+} from '@/app/(public)/watchlists/action/componentactions';
 
 interface AddToWatchlistButtonProps {
   movieId: number;
@@ -17,20 +22,46 @@ export function AddToWatchlistButton({
   const [added, setAdded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleAdd() {
+  useEffect(() => {
+    let mounted = true;
+    async function checkAlreadyAdded() {
+      try {
+        const alreadyAdded = await isMovieInWatchlist(movieId);
+        if (mounted && alreadyAdded) {
+          setAdded(true);
+        }
+      } catch {
+        // ignore error, assume not added
+      }
+    }
+    checkAlreadyAdded();
+    return () => {
+      mounted = false;
+    };
+  }, [movieId]);
+
+  async function handleAction() {
     setLoading(true);
     setError(null);
     try {
-      await createWatchlist({
-        name: title,
-        description: '',
-        movie_id: movieId,
-      });
-      setAdded(true);
+      if (added) {
+        await removeWatchlist(movieId);
+        setAdded(false);
+        toast.success('Removed from watchlist');
+      } else {
+        await createWatchlist({
+          name: title,
+          description: '',
+          movie_id: movieId,
+        });
+        setAdded(true);
+        toast.success('Added to watchlist');
+      }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to add to watchlist'
-      );
+      const msg =
+        err instanceof Error ? err.message : 'Failed to update watchlist';
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -39,16 +70,17 @@ export function AddToWatchlistButton({
   return (
     <div className="mt-6">
       <Button
-        variant={added ? 'secondary' : 'default'}
-        disabled={loading || added}
-        onClick={handleAdd}
-        aria-label="Add to Watchlist"
+        disabled={loading}
+        onClick={handleAction}
+        aria-label={added ? 'Remove from Watchlist' : 'Add to Watchlist'}
         className="cursor-pointer"
       >
         {loading
-          ? 'Adding...'
+          ? added
+            ? 'Removing...'
+            : 'Adding...'
           : added
-            ? 'Added to Watchlist'
+            ? 'Remove from Watchlist'
             : 'Add to Watchlist'}
       </Button>
       {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
