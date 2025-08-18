@@ -68,12 +68,12 @@ export function AddToWatchlistButton({
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 flex flex-col items-center sm:items-start">
       <Button
         disabled={loading}
         onClick={handleAction}
         aria-label={added ? 'Remove from Watchlist' : 'Add to Watchlist'}
-        className="cursor-pointer"
+        className="w-full max-w-xs cursor-pointer py-3 text-base sm:w-auto sm:max-w-none sm:text-sm"
       >
         {loading
           ? added
@@ -83,7 +83,11 @@ export function AddToWatchlistButton({
             ? 'Remove from Watchlist'
             : 'Add to Watchlist'}
       </Button>
-      {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
+      {error && (
+        <div className="mt-2 w-full max-w-xs text-center text-sm text-red-500 sm:w-auto sm:max-w-none sm:text-left">
+          {error}
+        </div>
+      )}
     </div>
   );
 }

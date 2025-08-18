@@ -117,10 +117,12 @@ export default async function MovieDetailPage({ params }: PageProps) {
                     </div>
                   )}
                 </div>
-                <div className="flex h-8 cursor-pointer items-center">
-                  <AddToWatchlistButton movieId={movieId} title={movie.title} />
-                </div>
               </div>
+            </div>
+
+            {/* Add to Watchlist Button - Responsive, above Genres */}
+            <div className="mx-auto mt-4 w-full max-w-xs sm:mt-6 sm:max-w-none">
+              <AddToWatchlistButton movieId={movieId} title={movie.title} />
             </div>
 
             {/* Genres */}
