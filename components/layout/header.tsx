@@ -1,8 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import { FilmIcon, BookmarkIcon } from '@heroicons/react/24/outline';
-import UserProfileServer from '@/components/auth/user-profile-server';
+import { NavUser } from '@/components/nav-user';
 import ThemeToggle from '@/components/layout/theme-toggle-client';
 import { SearchBar } from '@/components/movie/search-bar';
+import { authClient } from '@/lib/betterauth/auth-client';
 
 import {
   Sheet,
@@ -12,7 +15,32 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+function useUserProfile() {
+  const { data: session, isPending, error } = authClient.useSession();
+
+  const user = session?.user
+    ? {
+        name: session.user.name ?? 'User',
+        email: session.user.email ?? '',
+        avatar: session.user.image ?? '/avatars/user.jpg',
+      }
+    : {
+        name: 'User',
+        email: '',
+        avatar: '/avatars/user.jpg',
+      };
+
+  return { user, isPending, error };
+}
+
 export function Header() {
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const { user } = useUserProfile();
+  const router = useRouter();
+
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -55,11 +83,12 @@ export function Header() {
 
           {/* Mobile Burger Menu */}
           <div className="md:hidden">
-            <Sheet>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
                 <button
                   aria-label="Open navigation"
                   className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex items-center justify-center rounded-md p-2 focus:ring-2 focus:outline-none"
+                  onClick={() => setSheetOpen(true)}
                 >
                   {/* Burger Icon */}
                   <svg
@@ -83,25 +112,55 @@ export function Header() {
                   <SheetTitle></SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col gap-4 p-6">
-                  <UserProfileServer />
+                  <Link
+                    href="/profile"
+                    className="text-foreground text-lg font-semibold"
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    Profile
+                  </Link>
                   <Link
                     href="/watchlists"
                     className="text-foreground text-lg font-semibold"
+                    onClick={() => setSheetOpen(false)}
                   >
                     My Lists
                   </Link>
                   <Link
                     href="/trending"
                     className="text-foreground text-lg font-semibold"
+                    onClick={() => setSheetOpen(false)}
                   >
                     Trending
                   </Link>
                   <Link
                     href="/top-rated"
                     className="text-foreground text-lg font-semibold"
+                    onClick={() => setSheetOpen(false)}
                   >
                     Top Rated
                   </Link>
+                  {/* Logout Button */}
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      type="button"
+                      className="text-muted-foreground hover:text-foreground border-border w-full rounded-md border py-3 text-base font-semibold transition-colors"
+                      onClick={() =>
+                        authClient.signOut({
+                          fetchOptions: {
+                            onSuccess: () => {
+                              router.push('/auth/login');
+                            },
+                            onError: (error) => {
+                              console.error('Logout failed:', error);
+                            },
+                          },
+                        })
+                      }
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -109,7 +168,7 @@ export function Header() {
 
           {/* User Profile (server session fetch) - desktop only */}
           <div className="hidden md:block">
-            <UserProfileServer />
+            <NavUser user={user} />
           </div>
         </div>
       </div>
