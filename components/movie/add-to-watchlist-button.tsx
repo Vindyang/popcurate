@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { authClient } from '@/lib/betterauth/auth-client';
 import {
   createWatchlist,
   isMovieInWatchlist,
@@ -21,6 +23,8 @@ export function AddToWatchlistButton({
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     let mounted = true;
@@ -41,6 +45,10 @@ export function AddToWatchlistButton({
   }, [movieId]);
 
   async function handleAction() {
+    if (!session?.user) {
+      router.push('/auth/login');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
