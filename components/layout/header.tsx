@@ -21,17 +21,26 @@ import { useRouter } from 'next/navigation';
 function useUserProfile() {
   const { data: session, isPending, error } = authClient.useSession();
 
-  const user = session?.user
-    ? {
-        name: session.user.name ?? 'User',
-        email: session.user.email ?? '',
-        avatar: session.user.image ?? '/avatars/user.jpg',
-      }
-    : {
-        name: 'User',
-        email: '',
-        avatar: '/avatars/user.jpg',
-      };
+  if (!session?.user) {
+    return {
+      user: (
+        <Link
+          href="/auth/login"
+          className="text-primary bg-muted hover:bg-accent rounded-full px-4 py-2 font-medium transition-colors"
+        >
+          Sign in
+        </Link>
+      ),
+      isPending,
+      error,
+    };
+  }
+
+  const user = {
+    name: session.user.name ?? 'User',
+    email: session.user.email ?? '',
+    avatar: session.user.image ?? '/avatars/user.jpg',
+  };
 
   return { user, isPending, error };
 }
@@ -168,7 +177,11 @@ export function Header() {
 
           {/* User Profile (server session fetch) - desktop only */}
           <div className="hidden md:block">
-            <NavUser user={user} />
+            {typeof user === 'object' && !('name' in user) ? (
+              user
+            ) : (
+              <NavUser user={user} />
+            )}
           </div>
         </div>
       </div>
