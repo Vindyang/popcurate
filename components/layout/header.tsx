@@ -18,36 +18,8 @@ import {
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-function useUserProfile() {
-  const { data: session, isPending, error } = authClient.useSession();
-
-  if (!session?.user) {
-    return {
-      user: (
-        <Link
-          href="/auth/login"
-          className="text-primary bg-muted hover:bg-accent rounded-full px-4 py-2 font-medium transition-colors"
-        >
-          Sign in
-        </Link>
-      ),
-      isPending,
-      error,
-    };
-  }
-
-  const user = {
-    name: session.user.name ?? 'User',
-    email: session.user.email ?? '',
-    avatar: session.user.image ?? '/avatars/user.jpg',
-  };
-
-  return { user, isPending, error };
-}
-
 export function Header() {
   const [sheetOpen, setSheetOpen] = useState(false);
-  const { user } = useUserProfile();
   const router = useRouter();
 
   return (
@@ -175,13 +147,9 @@ export function Header() {
             </Sheet>
           </div>
 
-          {/* User Profile (server session fetch) - desktop only */}
+          {/* User Profile (session fetch now handled in NavUser) - desktop only */}
           <div className="hidden md:block">
-            {typeof user === 'object' && !('name' in user) ? (
-              user
-            ) : (
-              <NavUser user={user} />
-            )}
+            <NavUser />
           </div>
         </div>
       </div>

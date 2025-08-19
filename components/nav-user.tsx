@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -18,16 +20,50 @@ import { authClient } from '@/lib/betterauth/auth-client';
 /**
  * Lightweight user dropdown that does NOT depend on SidebarProvider.
  */
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const router = useRouter();
+  const { data: session } = authClient.useSession();
+
+  if (!session?.user) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            type="button"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-primary flex items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            aria-label="User menu"
+          >
+            <Avatar className="h-8 w-8 rounded-lg">
+              <AvatarFallback className="rounded-lg">
+                <User />
+              </AvatarFallback>
+            </Avatar>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="min-w-40 rounded-lg"
+          align="start"
+          side="bottom"
+          sideOffset={8}
+        >
+          <DropdownMenuItem asChild>
+            <Link
+              href="/auth/login"
+              className="text-primary bg-muted hover:bg-accent w-full rounded-full px-4 py-2 text-center font-medium transition-colors"
+            >
+              Sign in
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
+  const user = {
+    name: session.user.name ?? 'User',
+    email: session.user.email ?? '',
+    avatar: session.user.image ?? '/avatars/user.jpg',
+  };
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -51,7 +87,7 @@ export function NavUser({
           aria-label="User menu"
         >
           <Avatar className="h-8 w-8 rounded-lg">
-            <AvatarImage src={'/avatars/user.jpg'} alt={user.name} />
+            <AvatarImage src={user.avatar} alt={user.name} />
             <AvatarFallback className="rounded-lg">
               <User />
             </AvatarFallback>
@@ -60,14 +96,14 @@ export function NavUser({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="min-w-56 rounded-lg"
-        align="end"
+        align="start"
         side="bottom"
         sideOffset={8}
       >
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={'/avatars/user.jpg'} alt={user.name} />
+              <AvatarImage src={user.avatar} alt={user.name} />
               <AvatarFallback className="rounded-lg">
                 <User />
               </AvatarFallback>
