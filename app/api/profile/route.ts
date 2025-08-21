@@ -22,7 +22,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (e) {
     return NextResponse.json(
-      { error: 'Failed to update profile' },
+      { error: 'Failed to update profile', e },
       { status: 500 }
     );
   }

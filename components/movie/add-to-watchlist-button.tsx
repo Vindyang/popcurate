@@ -1,48 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/betterauth/auth-client';
 import {
   createWatchlist,
-  isMovieInWatchlist,
   removeWatchlist,
 } from '@/app/(public)/watchlists/action/componentactions';
 
 interface AddToWatchlistButtonProps {
   movieId: number;
   title: string;
+  initialAdded?: boolean;
 }
 
 export function AddToWatchlistButton({
   movieId,
   title,
+  initialAdded = false,
 }: AddToWatchlistButtonProps) {
   const [loading, setLoading] = useState(false);
-  const [added, setAdded] = useState(false);
+  const [added, setAdded] = useState(initialAdded);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { data: session } = authClient.useSession();
-
-  useEffect(() => {
-    let mounted = true;
-    async function checkAlreadyAdded() {
-      try {
-        const alreadyAdded = await isMovieInWatchlist(movieId);
-        if (mounted && alreadyAdded) {
-          setAdded(true);
-        }
-      } catch {
-        // ignore error, assume not added
-      }
-    }
-    checkAlreadyAdded();
-    return () => {
-      mounted = false;
-    };
-  }, [movieId]);
 
   async function handleAction() {
     if (!session?.user) {

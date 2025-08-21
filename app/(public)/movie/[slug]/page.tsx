@@ -13,6 +13,7 @@ import { tmdbClient } from '@/lib/tmdb/client';
 import { RelatedMovies } from '@/components/movie/related-movies';
 import { DetailedMovieInfo } from '@/components/movie/detailed-movie-info';
 import { AddToWatchlistButton } from '@/components/movie/add-to-watchlist-button';
+import { isMovieInWatchlist } from '@/app/(public)/watchlists/action/componentactions';
 import type { TMDbMovieDetails } from '@/types/tmdb';
 
 interface PageProps {
@@ -40,6 +41,15 @@ export default async function MovieDetailPage({ params }: PageProps) {
   } catch (error) {
     console.error('Error fetching movie details:', error);
     notFound();
+  }
+
+  // SSR: Check if movie is in user's watchlist
+  let initialAdded = false;
+  try {
+    initialAdded = await isMovieInWatchlist(movieId);
+  } catch (err) {
+    console.error('Error checking watchlist status:', err);
+    initialAdded = false;
   }
 
   const year = movie.release_date
@@ -122,7 +132,11 @@ export default async function MovieDetailPage({ params }: PageProps) {
 
             {/* Add to Watchlist Button - Responsive, above Genres */}
             <div className="mx-auto mt-4 w-full max-w-xs sm:mt-6 sm:max-w-none">
-              <AddToWatchlistButton movieId={movieId} title={movie.title} />
+              <AddToWatchlistButton
+                movieId={movieId}
+                title={movie.title}
+                initialAdded={initialAdded}
+              />
             </div>
 
             {/* Genres */}
