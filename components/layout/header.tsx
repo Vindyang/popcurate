@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 export function Header() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
@@ -121,26 +122,36 @@ export function Header() {
                   >
                     Top Rated
                   </Link>
-                  {/* Logout Button */}
+                  {/* Auth Button */}
                   <div className="mt-6 flex justify-center">
-                    <button
-                      type="button"
-                      className="text-muted-foreground hover:text-foreground border-border w-full rounded-md border py-3 text-base font-semibold transition-colors"
-                      onClick={() =>
-                        authClient.signOut({
-                          fetchOptions: {
-                            onSuccess: () => {
-                              router.push('/auth/login');
+                    {session?.user ? (
+                      <button
+                        type="button"
+                        className="text-muted-foreground hover:text-foreground border-border w-full rounded-md border py-3 text-base font-semibold transition-colors"
+                        onClick={() =>
+                          authClient.signOut({
+                            fetchOptions: {
+                              onSuccess: () => {
+                                router.push('/auth/login');
+                              },
+                              onError: (error) => {
+                                console.error('Logout failed:', error);
+                              },
                             },
-                            onError: (error) => {
-                              console.error('Logout failed:', error);
-                            },
-                          },
-                        })
-                      }
-                    >
-                      Logout
-                    </button>
+                          })
+                        }
+                      >
+                        Logout
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="text-primary bg-muted hover:bg-accent w-full rounded-md border py-3 text-base font-semibold transition-colors"
+                        onClick={() => router.push('/auth/login')}
+                      >
+                        Login
+                      </button>
+                    )}
                   </div>
                 </nav>
               </SheetContent>
