@@ -12,7 +12,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "prepare": "husky install",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "echo \"No tests specified\" && exit 0",
+    "train:implicit": "ts-node scripts/trainImplicitModel.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -32,9 +33,11 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
+    "libmf": "^0.2.0",
     "lucide-react": "^0.539.0",
     "next": "15.4.5",
     "next-themes": "^0.4.6",
+    "node-fetch": "^3.3.2",
     "postgres": "^3.4.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
