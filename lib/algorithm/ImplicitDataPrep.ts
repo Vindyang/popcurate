@@ -1,8 +1,4 @@
 'use server';
-/**
- * ImplicitDataPrep - Exports watchlist interactions for matrix factorization training.
- * Uses Supabase to fetch user-movie pairs and outputs libmf-compatible data.
- */
 
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
@@ -12,10 +8,6 @@ const supabase = createClient(
   process.env.SUPABASE_KEY!
 );
 
-/**
- * Export watchlist interactions to a file in libmf format.
- * @param filePath - Output file path
- */
 export async function exportImplicitData(filePath: string) {
   const { data: watchlists, error } = await supabase
     .from('watchlists')

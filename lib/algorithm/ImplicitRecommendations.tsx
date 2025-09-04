@@ -1,5 +1,6 @@
 'use client';
-import { Card } from './ui/card';
+import Image from 'next/image';
+import { Card } from '../../components/ui/card';
 
 type Movie = {
   id: number;
@@ -25,9 +26,9 @@ export default function ImplicitRecommendations({
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      {movies.map((m) => (
-        <Card key={m.id} className="flex flex-col items-center p-4">
-          <img
+      {movies.map((m, idx) => (
+        <Card key={`${m.id}-${idx}`} className="flex flex-col items-center p-4">
+          <Image
             src={`https://image.tmdb.org/t/p/w342${m.poster_path}`}
             alt={m.title}
             className="mb-2 h-60 w-40 rounded-lg object-cover"

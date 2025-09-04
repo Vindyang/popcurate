@@ -5,8 +5,20 @@ import { MovieCard } from '@/components/movie/movie-card';
 import { GenreSelector } from '@/components/movie/genre-selector';
 import { tmdbClient } from '@/lib/tmdb/client';
 import type { TMDbMovie } from '@/types/tmdb';
+import { getServerSession } from '@/lib/betterauth/get-session';
+import { fetchRecommendedMovies } from '@/components/movie/recommended-movies-fetch';
 
-export default function Home() {
+export default async function Home() {
+  // Get current user session
+  const session = await getServerSession();
+  const userId = session?.user?.id;
+
+  // Prepare recommended movies
+  let recommendedMovies: TMDbMovie[] = [];
+  if (userId) {
+    recommendedMovies = await fetchRecommendedMovies(userId);
+  }
+
   return (
     <div className="min-h-screen">
       {/* Hero Section with Background */}
@@ -38,6 +50,19 @@ export default function Home() {
         </div>
       </section>
       <hr className="my-8 border-t border-gray-700" />
+
+      {/* Recommended for you Section */}
+      {recommendedMovies.length > 0 && (
+        <section className="py-12">
+          <div className="container mx-auto max-w-7xl px-4">
+            <MovieSection
+              title="Recommended for you"
+              description="Movies picked just for you based on your watchlists"
+              movies={recommendedMovies}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Featured Movies Sections */}
       <section className="py-12">
@@ -84,42 +109,48 @@ async function MovieSection({
   title,
   description,
   endpoint,
+  movies: moviesProp,
 }: {
   title: string;
   description: string;
-  endpoint: string;
+  endpoint?: string;
+  movies?: TMDbMovie[];
 }) {
   let movies: TMDbMovie[] = [];
 
-  try {
-    // Fetch movies based on the endpoint
-    let response;
-    switch (endpoint) {
-      case '/trending':
-        response = await tmdbClient.getTrendingMovies('week', 1);
-        break;
-      case '/top-rated':
-        response = await tmdbClient.getTopRatedMovies(1);
-        break;
-      case '/now-playing':
-        response = await tmdbClient.getNowPlayingMovies(1);
-        break;
-      case '/upcoming':
-        response = await tmdbClient.getUpcomingMovies(1);
-        break;
-      case '/popular':
-        response = await tmdbClient.getPopularMovies(1);
-        break;
-      default:
-        response = await tmdbClient.getPopularMovies(1);
-    }
+  if (moviesProp && moviesProp.length > 0) {
+    movies = moviesProp;
+  } else if (endpoint) {
+    try {
+      // Fetch movies based on the endpoint
+      let response;
+      switch (endpoint) {
+        case '/trending':
+          response = await tmdbClient.getTrendingMovies('week', 1);
+          break;
+        case '/top-rated':
+          response = await tmdbClient.getTopRatedMovies(1);
+          break;
+        case '/now-playing':
+          response = await tmdbClient.getNowPlayingMovies(1);
+          break;
+        case '/upcoming':
+          response = await tmdbClient.getUpcomingMovies(1);
+          break;
+        case '/popular':
+          response = await tmdbClient.getPopularMovies(1);
+          break;
+        default:
+          response = await tmdbClient.getPopularMovies(1);
+      }
 
-    // Take first 6 movies for the preview
-    movies = response.results.slice(0, 6);
-  } catch (error) {
-    console.error(`Error fetching movies for ${endpoint}:`, error);
-    // Fallback to empty array if there's an error
-    movies = [];
+      // Take first 6 movies for the preview
+      movies = response.results.slice(0, 6);
+    } catch (error) {
+      console.error(`Error fetching movies for ${endpoint}:`, error);
+      // Fallback to empty array if there's an error
+      movies = [];
+    }
   }
 
   return (
@@ -129,17 +160,19 @@ async function MovieSection({
           <h2 className="text-2xl font-bold">{title}</h2>
           <p className="text-muted-foreground">{description}</p>
         </div>
-        <Button asChild variant="outline">
-          <Link href={endpoint}>View All</Link>
-        </Button>
+        {endpoint && (
+          <Button asChild variant="outline">
+            <Link href={endpoint}>View All</Link>
+          </Button>
+        )}
       </div>
 
       {/* Movie grid */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
         {movies.length > 0
-          ? movies.map((movie) => (
+          ? movies.map((movie, idx) => (
               <MovieCard
-                key={movie.id}
+                key={movie.id ?? idx}
                 movie={movie}
                 size="sm"
                 showRating={true}
