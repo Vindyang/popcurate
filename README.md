@@ -188,6 +188,46 @@ bun format:check # Check code formatting
 - Respectful API usage following TMDb guidelines
 - Client-side caching for optimal performance
 
+## App Setup & Usage
+
+### Prerequisites
+
+- Python 3.12+
+- Bun (for frontend)
+- Supabase project with required tables (see `database/schema.ts`)
+- .env file with NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, TMDB_API_KEY
+
+### Initial Data Population
+
+To populate your movies table with TMDB metadata:
+
+```bash
+python scripts/populate_movies_table.py
+```
+
+### Running the App
+
+To start the frontend and backend:
+
+```bash
+bun install
+bun dev
+```
+
+### Running the Recommendation Engine
+
+To generate recommendations:
+
+```bash
+python scripts/train_implicit_model.py
+```
+
+### Running Tests
+
+```bash
+pytest scripts/test_train_implicit_model.py
+```
+
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
@@ -233,8 +273,7 @@ The app can be deployed to any platform that supports Next.js:
 
 - [x] Supabase integration for user data
 - [x] User authentication and profiles
-- [ ] Personal watchlists
-- [ ] User ratings and reviews
+- [x] Personal watchlists
 - [ ] Social features (following, sharing)
 - [ ] Personalized recommendations
 - [ ] PWA features
