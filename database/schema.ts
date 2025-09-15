@@ -80,3 +80,18 @@ export const watchlists = pgTable('watchlists', {
     .$defaultFn(() => new Date())
     .notNull(),
 });
+export const movies = pgTable('movies', {
+  movie_id: integer('movie_id').primaryKey(),
+  overview: text('overview'),
+  title: text('title'),
+  genres: text('genres'),
+  release_date: timestamp('release_date'),
+  poster_path: text('poster_path'),
+  tmdb_data: text('tmdb_data'),
+  created_at: timestamp('created_at')
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updated_at: timestamp('updated_at')
+    .$defaultFn(() => new Date())
+    .notNull(),
+});
