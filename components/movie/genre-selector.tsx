@@ -69,8 +69,8 @@ export function GenreSelector({ className }: GenreSelectorProps) {
     setSuggestedMovies([]);
 
     try {
-      // Join genre IDs with comma for API call
-      const genreIds = selectedGenres.map((g) => g.id).join(',');
+      // Join genre IDs with pipe (|) for OR operation - movies with ANY of the selected genres
+      const genreIds = selectedGenres.map((g) => g.id).join('|');
       const response = await fetch(
         `/api/movies/discover?genre=${genreIds}&sort_by=popularity.desc&page=1`
       );
@@ -94,7 +94,8 @@ export function GenreSelector({ className }: GenreSelectorProps) {
     const nextPage = currentPage + 1;
 
     try {
-      const genreIds = selectedGenres.map((g) => g.id).join(',');
+      // Join genre IDs with pipe (|) for OR operation - movies with ANY of the selected genres
+      const genreIds = selectedGenres.map((g) => g.id).join('|');
       const response = await fetch(
         `/api/movies/discover?genre=${genreIds}&sort_by=popularity.desc&page=${nextPage}`
       );

@@ -5,143 +5,69 @@ import { TMDbLogo } from '@/components/ui/tmdb-logo';
 export function Footer() {
   return (
     <footer className="bg-background border-t">
-      <div className="container mx-auto max-w-7xl px-4 py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* Brand */}
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <FilmIcon className="text-primary h-6 w-6" />
-              <span className="text-primary text-lg font-bold">Popcurate</span>
-            </Link>
-            <p className="text-muted-foreground text-sm">
-              Curated popcorn-ready picks, daily. Discover your next favorite
-              movie with personalized recommendations.
-            </p>
-          </div>
-
-          {/* Discover */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold">Discover</h3>
-            <ul className="text-muted-foreground space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/trending"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Trending Movies
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/popular"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Popular Movies
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/top-rated"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Top Rated
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/upcoming"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Upcoming Movies
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Community */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold">Community</h3>
-            <ul className="text-muted-foreground space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/watchlists"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Watchlists
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/reviews"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Reviews
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/users"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Find Users
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/discussions"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Discussions
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold">Company</h3>
-            <ul className="text-muted-foreground space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/about"
-                  className="hover:text-foreground transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
+      <div className="container mx-auto max-w-7xl px-4 py-16">
+        {/* Centered Brand Section */}
+        <div className="mb-12 space-y-6 text-center">
+          <Link href="/" className="inline-flex items-center space-x-3">
+            <FilmIcon className="text-primary h-8 w-8" />
+            <span className="text-primary text-2xl font-bold">Popcurate</span>
+          </Link>
+          <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+            Curated popcorn-ready picks, daily. Discover your next favorite
+            movie with personalized recommendations.
+          </p>
         </div>
 
-        <div className="mt-12 border-t pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        {/* Navigation Links */}
+        <div className="mb-12 flex flex-wrap justify-center gap-8">
+          <Link
+            href="/trending"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Trending Movies
+          </Link>
+          <Link
+            href="/popular"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Popular Movies
+          </Link>
+          <Link
+            href="/top-rated"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Top Rated
+          </Link>
+          <Link
+            href="/now-playing"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Now Playing
+          </Link>
+          <Link
+            href="/upcoming"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Upcoming Movies
+          </Link>
+          <Link
+            href="/watchlists"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Watchlists
+          </Link>
+          <Link
+            href="/profile"
+            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+          >
+            Profile
+          </Link>
+        </div>
+
+        <div className="border-t pt-8">
+          <div className="flex flex-col items-center gap-4 text-center">
             {/* Attribution */}
-            <div className="text-muted-foreground flex flex-col items-center gap-2 text-xs md:flex-row md:gap-4">
-              <p>© 2025 Popcurate. All rights reserved.</p>
+            <div className="text-muted-foreground flex flex-col items-center gap-3 text-sm">
               <div className="flex items-center gap-2">
                 <span>Powered by</span>
                 <Link
@@ -150,25 +76,24 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="transition-opacity hover:opacity-80"
                 >
-                  <TMDbLogo className="h-4 w-auto" />
+                  <TMDbLogo className="h-5 w-auto" />
                 </Link>
               </div>
+              <p>© 2025 Popcurate. All rights reserved.</p>
             </div>
 
             {/* Made with love */}
-            <div className="text-muted-foreground flex items-center gap-1 text-xs">
+            <div className="text-muted-foreground flex items-center gap-1 text-sm">
               <span>Made by</span>
-              <span>
-                <Link
-                  href="https://github.com/Vindyang"
-                  className="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Vindyang
-                </Link>
-              </span>
-              <span>for movie lovers</span>
+              <Link
+                href="https://github.com/Vindyang"
+                className="hover:text-foreground underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Vindyang
+              </Link>
+              <span>for movie lovers 🍿</span>
             </div>
           </div>
         </div>
