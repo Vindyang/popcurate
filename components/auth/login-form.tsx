@@ -211,10 +211,11 @@ export function LoginForm({
             </form>
           </Form>
           <div className="bg-muted relative hidden md:block">
+            {/**Photo by <a href="https://unsplash.com/@helium325?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Alex He</a> on <a href="https://unsplash.com/photos/red-fishing-cabins-on-rocky-coast-with-mountain-backdrop-RVvI1EGRvDo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>*/}
             <Image
-              src="/placeholder.svg"
+              src="/auth-image.webp"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover"
               width={500}
               height={500}
             />
