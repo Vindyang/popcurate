@@ -14,6 +14,7 @@ export interface TMDbMovie {
   original_language: string;
   original_title: string;
   video: boolean;
+  matched_movie?: string; // For AI-enhanced recommendations
 }
 
 export interface TMDbMovieDetails extends TMDbMovie {

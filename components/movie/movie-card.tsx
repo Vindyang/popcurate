@@ -120,6 +120,13 @@ export function MovieCard({
                 </>
               )}
           </div>
+
+          {/* AI Recommendation Reason */}
+          {'matched_movie' in movie && movie.matched_movie && (
+            <div className="text-muted-foreground mt-2 text-xs italic">
+              Because you watched {movie.matched_movie}
+            </div>
+          )}
         </div>
         {/* Watchlist Info Section */}
         {watchlist && (
