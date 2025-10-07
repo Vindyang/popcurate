@@ -8,13 +8,13 @@ from supabase import create_client, Client
 load_dotenv()
 SUPABASE_URL = os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("NEXT_PUBLIC_SUPABASE_ANON_KEY")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+AI_API_KEY = os.environ.get("AI_API_KEY")
 
 assert SUPABASE_URL and SUPABASE_KEY, "Set SUPABASE_URL and SUPABASE_KEY in your .env file"
-assert GEMINI_API_KEY, "Set GEMINI_API_KEY in your .env file"
+assert AI_API_KEY, "Set AI_API_KEY in your .env file"
 
 # Configure Gemini
-genai.configure(api_key=GEMINI_API_KEY)
+genai.configure(api_key=AI_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
 
 # Connect to Supabase
