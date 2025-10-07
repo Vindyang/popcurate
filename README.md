@@ -17,11 +17,14 @@ A modern movie discovery web application built with Next.js 15 that helps users 
 - 🔗 **Watch Providers** - Find where to watch movies legally
 - 📺 **Movie Videos** - Trailers and clips integration
 
+### Recently Added
+
+- 🎯 **AI-Powered Recommendations** - Hybrid ALS + AI suggestions with explanations
+- 📝 **Custom Watchlists** - Create and manage movie lists
+
 ### Coming Soon
 
-- 📝 **Custom Watchlists** - Create and manage movie lists
 - ⭐ **User Ratings & Reviews** - Community-driven feedback
-- 🎯 **Personalized Recommendations** - AI-powered suggestions
 - 👥 **Social Features** - Follow users and share recommendations
 
 ## 🛠 Tech Stack
@@ -214,13 +217,22 @@ bun install
 bun dev
 ```
 
-### Running the Recommendation Engine
+### Running the AI Recommendation Engine
 
-To generate recommendations:
+**Step 1**: Generate base recommendations (ALS + TF-IDF):
 
 ```bash
 python scripts/train_implicit_model.py
 ```
+
+**Step 2**: Enhance with AI (optional but recommended):
+
+```bash
+# Add AI_API_KEY to .env.local first
+python scripts/enhance_recs_ai.py
+```
+
+**Step 3**: View recommendations at `/recommendations` or click "For You" in the header.
 
 ### Running Tests
 
@@ -258,7 +270,7 @@ The app can be deployed to any platform that supports Next.js:
 
 ## 🎯 Roadmap
 
-### Phase 1 ✅ (Current)
+### Phase 1 ✅ (Past)
 
 - [x] Next.js 15 setup with App Router
 - [x] TMDb API integration
@@ -269,13 +281,13 @@ The app can be deployed to any platform that supports Next.js:
 - [x] Dark/Light theme support
 - [x] TypeScript implementation
 
-### Phase 2 📋 (Planned)
+### Phase 2 📋 (Current)
 
 - [x] Supabase integration for user data
 - [x] User authentication and profiles
 - [x] Personal watchlists
 - [ ] Social features (following, sharing)
-- [ ] Personalized recommendations
+- [x] Personalized recommendations
 - [ ] PWA features
 
 ### Phase 3 🌟 (Future)

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FilmIcon, BookmarkIcon } from '@heroicons/react/24/outline';
+import { FilmIcon, BookmarkIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { NavUser } from '@/components/nav-user';
 import ThemeToggle from '@/components/layout/theme-toggle-client';
 import { SearchBar } from '@/components/movie/search-bar';
@@ -39,6 +39,13 @@ export function Header() {
         <div className="flex items-center space-x-4">
           {/* Desktop Navigation Links */}
           <nav className="hidden items-center space-x-6 md:flex">
+            <Link
+              href="/recommendations"
+              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+            >
+              <SparklesIcon className="mr-1 inline h-4 w-4" />
+              For You
+            </Link>
             <Link
               href="/watchlists"
               className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
@@ -100,6 +107,13 @@ export function Header() {
                     onClick={() => setSheetOpen(false)}
                   >
                     Profile
+                  </Link>
+                  <Link
+                    href="/recommendations"
+                    className="text-foreground text-lg font-semibold"
+                    onClick={() => setSheetOpen(false)}
+                  >
+                    For You
                   </Link>
                   <Link
                     href="/watchlists"

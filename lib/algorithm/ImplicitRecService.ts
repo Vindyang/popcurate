@@ -11,11 +11,20 @@ const supabase = createClient(
 );
 
 export async function recommendImplicitMovies(userId: string, topN = 10) {
-  // Read recommendations from Python output (JSON)
+  // Try to read enhanced recommendations first (with Gemini)
+  const enhancedPath = path.resolve('data/recs', `${userId}_enhanced.json`);
   const recPath = path.resolve('data/recs', `${userId}.json`);
-  if (!fs.existsSync(recPath))
+
+  let raw;
+  if (fs.existsSync(enhancedPath)) {
+    // Use Gemini-enhanced recommendations
+    raw = JSON.parse(fs.readFileSync(enhancedPath, 'utf8'));
+  } else if (fs.existsSync(recPath)) {
+    // Fallback to regular ALS recommendations
+    raw = JSON.parse(fs.readFileSync(recPath, 'utf8'));
+  } else {
     throw new Error('No recommendations found for user');
-  const raw = JSON.parse(fs.readFileSync(recPath, 'utf8'));
+  }
 
   // Fetch user's watchlist movies and their genres
   const { data: watchlistMovies, error: wlError } = await supabase

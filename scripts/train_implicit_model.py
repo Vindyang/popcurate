@@ -62,14 +62,27 @@ def hybrid_score_recommendations(recommended_codes, als_scores, tfidf_matrix, us
     return sorted(zip(recommended_codes, hybrid_scores), key=lambda x: x[1], reverse=True)
 
 if __name__ == "__main__":
+    print("=" * 60)
+    print("🎬 POPCURATE - AI Recommendation Training")
+    print("=" * 60)
+
     # Fetch watchlist data
+    print("\n📊 Step 1: Fetching watchlist data from Supabase...")
     response = supabase.table("watchlists").select("user_id, movie_id").execute()
     watchlists = response.data
 
     if not watchlists or len(watchlists) < 2:
-        raise ValueError("Not enough watchlist data for training.")
+        raise ValueError("Not enough watchlist data for training. Need at least 2 watchlist entries.")
 
     df = pd.DataFrame(watchlists)
+    unique_users = df["user_id"].nunique()
+    unique_movies = df["movie_id"].nunique()
+    print(f"   ✓ Found {len(watchlists)} watchlist entries")
+    print(f"   ✓ {unique_users} unique users")
+    print(f"   ✓ {unique_movies} unique movies")
+
+    # Build user-item matrix
+    print("\n🔢 Step 2: Building user-item matrix...")
     user_codes = df["user_id"].astype("category").cat.codes
     item_codes = df["movie_id"].astype("category").cat.codes
 
@@ -81,10 +94,15 @@ if __name__ == "__main__":
 
     matrix = coo_matrix((np.ones(len(df)), (user_codes, item_codes)))
     matrix_csr = matrix.tocsr()
+    print(f"   ✓ Matrix shape: {matrix_csr.shape[0]} users × {matrix_csr.shape[1]} movies")
 
+    # Train ALS model
+    print("\n🤖 Step 3: Training ALS model (this may take a minute)...")
     model = AlternatingLeastSquares(factors=50, regularization=0.1, iterations=50)
     model.fit(matrix_csr)
+    print("   ✓ Model training complete!")
 
+    # Create output directory
     os.makedirs("data/recs", exist_ok=True)
 
     # --- Example: Fetch movie metadata and vectorize ---
@@ -93,18 +111,29 @@ if __name__ == "__main__":
     # movies_df.set_index('movie_id', inplace=True)
     # tfidf_matrix, vectorizer = vectorize_overviews(movies_df.loc[[item_map[i] for i in range(len(item_map))]]['overview'])
 
-    # --- Recommendation Loop with Hybrid Scoring ---
-    ALPHA = 0.7
+    # --- Generate Recommendations for All Users ---
+    print("\n🎬 Generating recommendations for all users...")
+
     for user_idx in range(matrix_csr.shape[0]):
         user_id = user_map[user_idx]
         recommended_codes, als_scores = model.recommend(user_idx, matrix_csr, N=50)
-        user_watchlist_ids = df[df['user_id'] == user_id]['movie_id'].tolist()
-        # user_profile_vector = compute_user_profile_vector(user_watchlist_ids, tfidf_matrix, item_code_map)
-        # if user_profile_vector is None:
-        #     recs = [{"itemId": str(item_map[i]), "score": float(s)} for i, s in zip(recommended_codes, als_scores)][:30]
-        # else:
-        #     final_recs_with_scores = hybrid_score_recommendations(recommended_codes, als_scores, tfidf_matrix, user_profile_vector, alpha=ALPHA)
-        #     recs = [{"itemId": str(item_map[i]), "score": float(s)} for i, s in final_recs_with_scores[:30]]
-        # with open(f"data/recs/{user_id}.json", "w") as f:
-        #     json.dump(recs, f)
-    # Uncomment and integrate above after connecting metadata and TF-IDF modules
+
+        # Create recommendations list (top 30)
+        recs = [{"itemId": str(item_map[i]), "score": float(s)}
+                for i, s in zip(recommended_codes, als_scores)][:30]
+
+        # Save to JSON file
+        with open(f"data/recs/{user_id}.json", "w") as f:
+            json.dump(recs, f)
+
+        print(f"  ✓ User {user_id}: {len(recs)} recommendations saved")
+
+    print(f"\n✅ Success! Generated recommendations for {matrix_csr.shape[0]} users")
+    print(f"   Saved to: data/recs/")
+    print(f"\n📝 Next steps:")
+    print(f"   1. (Optional) Run: python scripts/enhance_with_gemini.py")
+    print(f"      → Adds AI re-ranking with 'Because you watched...' explanations")
+    print(f"   2. Start your app and visit /recommendations")
+
+    # Note: TF-IDF hybrid scoring is available but disabled for now
+    # To enable, uncomment lines 91-94 and modify this loop to use hybrid_score_recommendations()
