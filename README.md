@@ -225,16 +225,14 @@ bun dev
 python scripts/train_implicit_model.py
 ```
 
-**Step 2**: Enhance with Gemini AI (optional but recommended):
+**Step 2**: Enhance with AI (optional but recommended):
 
 ```bash
-# Add GEMINI_API_KEY to .env.local first
-python scripts/enhance_with_gemini.py
+# Add AI_API_KEY to .env.local first
+python scripts/enhance_recs_ai.py
 ```
 
 **Step 3**: View recommendations at `/recommendations` or click "For You" in the header.
-
-📖 **Detailed setup guide**: See [AI_RECOMMENDATIONS_SETUP.md](docs/AI_RECOMMENDATIONS_SETUP.md)
 
 ### Running Tests
 
@@ -272,7 +270,7 @@ The app can be deployed to any platform that supports Next.js:
 
 ## 🎯 Roadmap
 
-### Phase 1 ✅ (Current)
+### Phase 1 ✅ (Past)
 
 - [x] Next.js 15 setup with App Router
 - [x] TMDb API integration
@@ -283,7 +281,7 @@ The app can be deployed to any platform that supports Next.js:
 - [x] Dark/Light theme support
 - [x] TypeScript implementation
 
-### Phase 2 📋 (Planned)
+### Phase 2 📋 (Current)
 
 - [x] Supabase integration for user data
 - [x] User authentication and profiles
