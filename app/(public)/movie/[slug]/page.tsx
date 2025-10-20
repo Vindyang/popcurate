@@ -21,6 +21,91 @@ interface PageProps {
 }
 
 import { MovieVideos } from '@/components/movie/movie-videos';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  // Extract movie ID from slug
+  const parts = slug.split('-');
+  const movieIdString = parts[parts.length - 1];
+  const movieId = parseInt(movieIdString);
+
+  if (!movieIdString || isNaN(movieId)) {
+    return {
+      title: 'Movie Not Found | Popcurate',
+      description: 'The requested movie could not be found.',
+    };
+  }
+
+  try {
+    const movie = await tmdbClient.getMovieDetails(movieId);
+    const year = movie.release_date
+      ? new Date(movie.release_date).getFullYear()
+      : null;
+    const genres = movie.genres?.map((g) => g.name).join(', ') || '';
+
+    // Create meta description
+    const description =
+      movie.overview && movie.overview.length > 0
+        ? movie.overview.length > 155
+          ? `${movie.overview.substring(0, 152)}...`
+          : movie.overview
+        : `Watch ${movie.title}${year ? ` (${year})` : ''}. ${genres ? `Genres: ${genres}.` : ''} Discover movie details, trailers, and recommendations on Popcurate.`;
+
+    // OpenGraph image
+    const ogImage = movie.poster_path
+      ? getImageUrl(movie.poster_path, 'w500')
+      : movie.backdrop_path
+        ? getImageUrl(movie.backdrop_path, 'w780')
+        : undefined;
+
+    return {
+      title: `${movie.title}${year ? ` (${year})` : ''} | Popcurate`,
+      description,
+      keywords: [
+        movie.title,
+        ...(movie.genres?.map((g) => g.name) || []),
+        'movie',
+        'film',
+        'watch',
+        'recommendations',
+        ...(year ? [year.toString()] : []),
+      ],
+      openGraph: {
+        title: `${movie.title}${year ? ` (${year})` : ''}`,
+        description,
+        type: 'video.movie',
+        url: `/movie/${slug}`,
+        siteName: 'Popcurate',
+        images: ogImage
+          ? [
+              {
+                url: ogImage,
+                width: 500,
+                height: 750,
+                alt: `${movie.title} poster`,
+              },
+            ]
+          : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${movie.title}${year ? ` (${year})` : ''}`,
+        description,
+        images: ogImage ? [ogImage] : undefined,
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Movie Details | Popcurate',
+      description: 'Discover movie details and recommendations on Popcurate.',
+    };
+  }
+}
 
 export default async function MovieDetailPage({ params }: PageProps) {
   const { slug } = await params;
@@ -57,8 +142,70 @@ export default async function MovieDetailPage({ params }: PageProps) {
     : null;
   const genres = movie.genres?.map((g) => g.name).join(', ') || 'N/A';
 
+  // Generate JSON-LD structured data for SEO
+  const movieSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Movie',
+    name: movie.title,
+    image: movie.poster_path
+      ? getImageUrl(movie.poster_path, 'original')
+      : undefined,
+    datePublished: movie.release_date,
+    description: movie.overview,
+    genre: movie.genres?.map((g) => g.name),
+    aggregateRating: movie.vote_average
+      ? {
+          '@type': 'AggregateRating',
+          ratingValue: movie.vote_average.toFixed(1),
+          ratingCount: movie.vote_count,
+          bestRating: 10,
+          worstRating: 0,
+        }
+      : undefined,
+    productionCompany: movie.production_companies?.map((company) => ({
+      '@type': 'Organization',
+      name: company.name,
+    })),
+    countryOfOrigin: movie.production_countries?.map((country) => ({
+      '@type': 'Country',
+      name: country.name,
+    })),
+    duration: movie.runtime ? `PT${movie.runtime}M` : undefined,
+  };
+
+  // Breadcrumb schema
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://popcurate.vercel.app',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: movie.title,
+        item: `https://popcurate.vercel.app/movie/${slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="bg-background min-h-screen">
+      {/* JSON-LD structured data - Movie Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }}
+      />
+      {/* JSON-LD structured data - Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <div className="container mx-auto max-w-6xl px-4 py-8">
         {/* Back Button */}
         <Link href="/">

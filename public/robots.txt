@@ -1,0 +1,13 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow private/protected routes
+Disallow: /api/
+Disallow: /profile
+Disallow: /watchlists
+Disallow: /recommendations
+Disallow: /auth/
+
+# Sitemap location
+Sitemap: https://popcurate.vercel.app/sitemap.xml

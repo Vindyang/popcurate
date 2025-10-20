@@ -7,6 +7,58 @@ import { tmdbClient } from '@/lib/tmdb/client';
 import type { TMDbMovie } from '@/types/tmdb';
 import { getServerSession } from '@/lib/betterauth/get-session';
 import { fetchRecommendedMovies } from '@/components/movie/recommended-movies-fetch';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    // Fetch trending movies to create dynamic description
+    const trending = await tmdbClient.getTrendingMovies('week', 1);
+    const topMovies = trending.results
+      .slice(0, 3)
+      .map((m) => m.title)
+      .join(', ');
+
+    const description = topMovies
+      ? `Discover your next favorite movie with personalized recommendations. Trending now: ${topMovies}. Browse popular, top-rated, and upcoming movies.`
+      : 'Discover your next favorite movie with personalized recommendations, create watchlists, and explore trending, popular, and top-rated films.';
+
+    return {
+      title: 'Popcurate - Curated Movie Recommendations & Watchlists',
+      description,
+      keywords: [
+        'movies',
+        'recommendations',
+        'watchlist',
+        'cinema',
+        'films',
+        'trending movies',
+        'popular movies',
+        'top rated movies',
+        'movie discovery',
+        'film recommendations',
+      ],
+      openGraph: {
+        title: 'Popcurate - Discover Your Next Favorite Movie',
+        description,
+        type: 'website',
+        url: '/',
+        siteName: 'Popcurate',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Popcurate - Curated Movie Recommendations',
+        description,
+      },
+    };
+  } catch (error) {
+    console.error('Error generating home page metadata:', error);
+    return {
+      title: 'Popcurate - Curated Movie Recommendations',
+      description:
+        'Discover your next favorite movie with personalized recommendations, create watchlists, and connect with fellow movie enthusiasts.',
+    };
+  }
+}
 
 export default async function Home() {
   // Get current user session

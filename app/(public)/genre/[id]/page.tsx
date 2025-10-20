@@ -38,8 +38,34 @@ export default async function GenrePage({
       notFound();
     }
 
+    // Breadcrumb schema for SEO
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://popcurate.vercel.app',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: `${genre.name} Movies`,
+          item: `https://popcurate.vercel.app/genre/${genreId}`,
+        },
+      ],
+    };
+
     return (
       <div className="container mx-auto max-w-7xl px-4 py-8">
+        {/* JSON-LD structured data - Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">
@@ -121,7 +147,27 @@ export async function generateMetadata({
 
     return {
       title: `${genre.name} Movies | Popcurate`,
-      description: `Discover the best ${genre.name.toLowerCase()} movies.`,
+      description: `Discover the best ${genre.name.toLowerCase()} movies. Browse popular, trending, and top-rated ${genre.name.toLowerCase()} films on Popcurate.`,
+      keywords: [
+        genre.name,
+        `${genre.name} movies`,
+        `${genre.name} films`,
+        'movie discovery',
+        'film recommendations',
+        'movies',
+      ],
+      openGraph: {
+        title: `${genre.name} Movies | Popcurate`,
+        description: `Discover the best ${genre.name.toLowerCase()} movies on Popcurate`,
+        type: 'website',
+        url: `/genre/${genreId}`,
+        siteName: 'Popcurate',
+      },
+      twitter: {
+        card: 'summary',
+        title: `${genre.name} Movies | Popcurate`,
+        description: `Discover the best ${genre.name.toLowerCase()} movies`,
+      },
     };
   } catch {
     return {

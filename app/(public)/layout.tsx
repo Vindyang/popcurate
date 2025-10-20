@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://popcurate.vercel.app'),
   title: 'Popcurate - Curated movie recommendations',
   description:
     'Discover your next favorite movie with personalized recommendations, create watchlists, and connect with fellow movie enthusiasts.',
