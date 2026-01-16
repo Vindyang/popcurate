@@ -292,7 +292,7 @@ The app can be deployed to any platform that supports Next.js:
 
 ### Phase 3 🌟 (Future)
 
-- [ ] AI-powered recommendations
+- [x] AI-powered recommendations
 - [ ] Mobile app companion
 - [ ] Advanced analytics
 - [ ] Community features

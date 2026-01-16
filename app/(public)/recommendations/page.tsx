@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/betterauth/auth-client';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,13 @@ import {
 } from '@heroicons/react/24/outline';
 import type { TMDbMovie } from '@/types/tmdb';
 import { Card } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function RecommendationsPage() {
   const router = useRouter();
@@ -22,19 +29,7 @@ export default function RecommendationsPage() {
   const [error, setError] = useState<string | null>(null);
   const [limit, setLimit] = useState(20);
 
-  useEffect(() => {
-    // Wait for session to load before checking auth
-    if (isPending) return;
-
-    if (!session?.user) {
-      router.push('/auth/login');
-      return;
-    }
-
-    fetchRecommendations();
-  }, [session, limit, isPending, router]);
-
-  const fetchRecommendations = async () => {
+  const fetchRecommendations = useCallback(async () => {
     if (!session?.user?.id) return;
 
     setLoading(true);
@@ -65,7 +60,19 @@ export default function RecommendationsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.id, limit]);
+
+  useEffect(() => {
+    // Wait for session to load before checking auth
+    if (isPending) return;
+
+    if (!session?.user) {
+      router.push('/auth/login');
+      return;
+    }
+
+    fetchRecommendations();
+  }, [session, limit, isPending, router, fetchRecommendations]);
 
   // Show loading while checking auth
   if (isPending) {
@@ -110,19 +117,25 @@ export default function RecommendationsPage() {
       </div>
 
       {/* Controls */}
-      <Card className="mb-6 p-4">
-        <div className="flex items-center gap-4">
-          <label className="text-sm font-medium">Number of recommendations:</label>
-          <select
-            value={limit}
-            onChange={(e) => setLimit(Number(e.target.value))}
-            className="border-input bg-background ring-offset-background focus-visible:ring-ring rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      <Card className="mb-6 p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <label className="text-sm font-medium whitespace-nowrap">
+            Number of recommendations:
+          </label>
+          <Select
+            value={String(limit)}
+            onValueChange={(value) => setLimit(Number(value))}
           >
-            <option value={10}>10 movies</option>
-            <option value={20}>20 movies</option>
-            <option value={30}>30 movies</option>
-            <option value={50}>50 movies</option>
-          </select>
+            <SelectTrigger className="w-full sm:w-[180px] h-10">
+              <SelectValue placeholder="Select amount" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10 movies</SelectItem>
+              <SelectItem value="20">20 movies</SelectItem>
+              <SelectItem value="30">30 movies</SelectItem>
+              <SelectItem value="50">50 movies</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </Card>
 
@@ -131,12 +144,12 @@ export default function RecommendationsPage() {
         <Card className="mb-6 p-6">
           <div className="text-center">
             <BookmarkIcon className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-            <h2 className="mb-2 text-xl font-semibold">No Recommendations Yet</h2>
+            <h2 className="mb-2 text-xl font-semibold">
+              No Recommendations Yet
+            </h2>
             <p className="text-muted-foreground mb-4">{error}</p>
             {error.includes('Add movies') && (
-              <Button onClick={() => router.push('/')}>
-                Browse Movies
-              </Button>
+              <Button onClick={() => router.push('/')}>Browse Movies</Button>
             )}
           </div>
         </Card>
