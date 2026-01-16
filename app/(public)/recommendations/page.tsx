@@ -126,7 +126,7 @@ export default function RecommendationsPage() {
             value={String(limit)}
             onValueChange={(value) => setLimit(Number(value))}
           >
-            <SelectTrigger className="w-full sm:w-[180px] h-10">
+            <SelectTrigger className="h-10 w-full sm:w-[180px]">
               <SelectValue placeholder="Select amount" />
             </SelectTrigger>
             <SelectContent>

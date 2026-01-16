@@ -54,7 +54,7 @@ export function MovieCard({
   return (
     <Link
       href={`/movie/${slug}`}
-      className="group block h-full"
+      className="group block h-full cursor-pointer"
       {...(openInNewTab
         ? { target: '_blank', rel: 'noopener noreferrer' }
         : {})}

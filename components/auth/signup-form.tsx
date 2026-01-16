@@ -133,7 +133,7 @@ export function SignupForm({
                           <button
                             type="button"
                             tabIndex={-1}
-                            className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500"
+                            className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer text-gray-500"
                             onClick={() => setShowPassword((v) => !v)}
                             aria-label={
                               showPassword ? 'Hide password' : 'Show password'
@@ -167,7 +167,7 @@ export function SignupForm({
                           <button
                             type="button"
                             tabIndex={-1}
-                            className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500"
+                            className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer text-gray-500"
                             onClick={() => setShowConfirmPassword((v) => !v)}
                             aria-label={
                               showConfirmPassword

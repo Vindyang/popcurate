@@ -30,7 +30,7 @@ export function NavUser() {
         <DropdownMenuTrigger asChild>
           <button
             type="button"
-            className="text-muted-foreground hover:text-foreground focus-visible:ring-primary flex items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-primary flex cursor-pointer items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
             aria-label="User menu"
           >
             <Avatar className="h-8 w-8 rounded-lg">
@@ -49,7 +49,7 @@ export function NavUser() {
           <DropdownMenuItem asChild>
             <Link
               href="/auth/login"
-              className="text-primary bg-muted hover:bg-accent w-full rounded-full px-4 py-2 text-center font-medium transition-colors"
+              className="text-primary bg-muted hover:bg-accent w-full cursor-pointer rounded-full px-4 py-2 text-center font-medium transition-colors"
             >
               Sign in
             </Link>
@@ -83,7 +83,7 @@ export function NavUser() {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="text-muted-foreground hover:text-foreground focus-visible:ring-primary flex items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          className="text-muted-foreground hover:text-foreground focus-visible:ring-primary flex cursor-pointer items-center rounded-full p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
           aria-label="User menu"
         >
           <Avatar className="h-8 w-8 rounded-lg">

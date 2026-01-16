@@ -1,7 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { FilmIcon, BookmarkIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import {
+  FilmIcon,
+  BookmarkIcon,
+  SparklesIcon,
+} from '@heroicons/react/24/outline';
 import { NavUser } from '@/components/nav-user';
 import ThemeToggle from '@/components/layout/theme-toggle-client';
 import { SearchBar } from '@/components/movie/search-bar';
@@ -27,7 +31,7 @@ export function Header() {
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex cursor-pointer items-center space-x-2">
           <FilmIcon className="text-primary h-8 w-8" />
           <span className="text-primary text-2xl font-bold">Popcurate</span>
         </Link>
@@ -41,27 +45,27 @@ export function Header() {
           <nav className="hidden items-center space-x-6 md:flex">
             <Link
               href="/recommendations"
-              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+              className="text-muted-foreground hover:text-foreground cursor-pointer text-sm font-medium transition-colors"
             >
               <SparklesIcon className="mr-1 inline h-4 w-4" />
               For You
             </Link>
             <Link
               href="/watchlists"
-              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+              className="text-muted-foreground hover:text-foreground cursor-pointer text-sm font-medium transition-colors"
             >
               <BookmarkIcon className="mr-1 inline h-4 w-4" />
               My Lists
             </Link>
             <Link
               href="/trending"
-              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+              className="text-muted-foreground hover:text-foreground cursor-pointer text-sm font-medium transition-colors"
             >
               Trending
             </Link>
             <Link
               href="/top-rated"
-              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+              className="text-muted-foreground hover:text-foreground cursor-pointer text-sm font-medium transition-colors"
             >
               Top Rated
             </Link>
@@ -76,7 +80,7 @@ export function Header() {
               <SheetTrigger asChild>
                 <button
                   aria-label="Open navigation"
-                  className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex items-center justify-center rounded-md p-2 focus:ring-2 focus:outline-none"
+                  className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex cursor-pointer items-center justify-center rounded-md p-2 focus:ring-2 focus:outline-none"
                   onClick={() => setSheetOpen(true)}
                 >
                   {/* Burger Icon */}
@@ -103,35 +107,35 @@ export function Header() {
                 <nav className="flex flex-col gap-4 p-6">
                   <Link
                     href="/profile"
-                    className="text-foreground text-lg font-semibold"
+                    className="text-foreground cursor-pointer text-lg font-semibold"
                     onClick={() => setSheetOpen(false)}
                   >
                     Profile
                   </Link>
                   <Link
                     href="/recommendations"
-                    className="text-foreground text-lg font-semibold"
+                    className="text-foreground cursor-pointer text-lg font-semibold"
                     onClick={() => setSheetOpen(false)}
                   >
                     For You
                   </Link>
                   <Link
                     href="/watchlists"
-                    className="text-foreground text-lg font-semibold"
+                    className="text-foreground cursor-pointer text-lg font-semibold"
                     onClick={() => setSheetOpen(false)}
                   >
                     My Lists
                   </Link>
                   <Link
                     href="/trending"
-                    className="text-foreground text-lg font-semibold"
+                    className="text-foreground cursor-pointer text-lg font-semibold"
                     onClick={() => setSheetOpen(false)}
                   >
                     Trending
                   </Link>
                   <Link
                     href="/top-rated"
-                    className="text-foreground text-lg font-semibold"
+                    className="text-foreground cursor-pointer text-lg font-semibold"
                     onClick={() => setSheetOpen(false)}
                   >
                     Top Rated
@@ -141,7 +145,7 @@ export function Header() {
                     {session?.user ? (
                       <button
                         type="button"
-                        className="text-muted-foreground hover:text-foreground border-border w-full rounded-md border py-3 text-base font-semibold transition-colors"
+                        className="text-muted-foreground hover:text-foreground border-border w-full cursor-pointer rounded-md border py-3 text-base font-semibold transition-colors"
                         onClick={() =>
                           authClient.signOut({
                             fetchOptions: {
@@ -160,7 +164,7 @@ export function Header() {
                     ) : (
                       <button
                         type="button"
-                        className="text-primary bg-muted hover:bg-accent w-full rounded-md border py-3 text-base font-semibold transition-colors"
+                        className="text-primary bg-muted hover:bg-accent w-full cursor-pointer rounded-md border py-3 text-base font-semibold transition-colors"
                         onClick={() => router.push('/auth/login')}
                       >
                         Login

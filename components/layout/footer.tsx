@@ -8,7 +8,10 @@ export function Footer() {
       <div className="container mx-auto max-w-7xl px-4 py-16">
         {/* Centered Brand Section */}
         <div className="mb-12 space-y-6 text-center">
-          <Link href="/" className="inline-flex items-center space-x-3">
+          <Link
+            href="/"
+            className="inline-flex cursor-pointer items-center space-x-3"
+          >
             <FilmIcon className="text-primary h-8 w-8" />
             <span className="text-primary text-2xl font-bold">Popcurate</span>
           </Link>
@@ -22,43 +25,43 @@ export function Footer() {
         <div className="mb-12 flex flex-wrap justify-center gap-8">
           <Link
             href="/trending"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Trending Movies
           </Link>
           <Link
             href="/popular"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Popular Movies
           </Link>
           <Link
             href="/top-rated"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Top Rated
           </Link>
           <Link
             href="/now-playing"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Now Playing
           </Link>
           <Link
             href="/upcoming"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Upcoming Movies
           </Link>
           <Link
             href="/watchlists"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Watchlists
           </Link>
           <Link
             href="/profile"
-            className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            className="text-muted-foreground hover:text-foreground cursor-pointer font-medium transition-colors"
           >
             Profile
           </Link>
@@ -74,7 +77,7 @@ export function Footer() {
                   href="https://www.themoviedb.org/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-opacity hover:opacity-80"
+                  className="cursor-pointer transition-opacity hover:opacity-80"
                 >
                   <TMDbLogo className="h-5 w-auto" />
                 </Link>
@@ -87,7 +90,7 @@ export function Footer() {
               <span>Made by</span>
               <Link
                 href="https://github.com/Vindyang"
-                className="hover:text-foreground underline transition-colors"
+                className="hover:text-foreground cursor-pointer underline transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >

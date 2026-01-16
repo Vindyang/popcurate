@@ -116,7 +116,7 @@ export function LoginForm({
                           <button
                             type="button"
                             tabIndex={-1}
-                            className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-500"
+                            className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer text-gray-500"
                             onClick={() => setShowPassword((v) => !v)}
                             aria-label={
                               showPassword ? 'Hide password' : 'Show password'
@@ -132,7 +132,7 @@ export function LoginForm({
                       </FormControl>
                       <a
                         href="#"
-                        className="mt-1 ml-auto block text-right text-sm underline-offset-2 hover:underline"
+                        className="mt-1 ml-auto block cursor-pointer text-right text-sm underline-offset-2 hover:underline"
                       >
                         Forgot your password?
                       </a>
