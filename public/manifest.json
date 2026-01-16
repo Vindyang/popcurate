@@ -1,9 +1,14 @@
 {
-  "name": "Popcurate",
+  "name": "Popcurate - Movie Discovery & Recommendations",
   "short_name": "Popcurate",
-  "description": "Curated movie recommendations",
+  "description": "Discover curated movie recommendations, create personalized watchlists, and find your next favorite film with Popcurate.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#8b5cf6"
+  "theme_color": "#8b5cf6",
+  "categories": ["entertainment", "movies", "lifestyle"],
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr"
 }

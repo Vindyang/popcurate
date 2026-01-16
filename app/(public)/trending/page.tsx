@@ -109,6 +109,23 @@ export default async function TrendingPage({
 }
 
 export const metadata = {
-  title: 'Trending Movies | Popcurate',
-  description: 'Discover the most popular movies trending right now.',
+  title: 'Trending Movies This Week - Popcurate Movie Recommendations',
+  description:
+    'Discover the most popular and trending movies right now on Popcurate. Browse curated lists of trending films, see what everyone is watching, and find your next favorite movie.',
+  keywords: [
+    'trending movies',
+    'popular movies',
+    'movies trending now',
+    'what to watch',
+    'Popcurate',
+    'movie trends',
+    'hot movies',
+    'viral movies',
+  ],
+  openGraph: {
+    title: 'Trending Movies This Week | Popcurate',
+    description: 'Discover the most popular movies trending right now on Popcurate.',
+    url: 'https://popcurate.vercel.app/trending',
+    type: 'website',
+  },
 };

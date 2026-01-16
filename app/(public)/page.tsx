@@ -23,31 +23,44 @@ export async function generateMetadata(): Promise<Metadata> {
       : 'Discover your next favorite movie with personalized recommendations, create watchlists, and explore trending, popular, and top-rated films.';
 
     return {
-      title: 'Popcurate - Curated Movie Recommendations & Watchlists',
+      title: 'Popcurate - Discover Curated Movie Recommendations & Personalized Watchlists',
       description,
       keywords: [
-        'movies',
-        'recommendations',
-        'watchlist',
-        'cinema',
-        'films',
+        'Popcurate',
+        'popcurate movie app',
+        'movie recommendations',
+        'curated movies',
+        'personalized movie recommendations',
+        'movie watchlist',
+        'movie discovery platform',
         'trending movies',
         'popular movies',
         'top rated movies',
-        'movie discovery',
+        'movie database',
         'film recommendations',
+        'what to watch',
+        'movie finder',
+        'cinema',
+        'films',
+        'best movies',
+        'movie suggestions',
       ],
       openGraph: {
         title: 'Popcurate - Discover Your Next Favorite Movie',
         description,
         type: 'website',
-        url: '/',
+        url: 'https://popcurate.vercel.app',
         siteName: 'Popcurate',
+        locale: 'en_US',
       },
       twitter: {
         card: 'summary_large_image',
         title: 'Popcurate - Curated Movie Recommendations',
         description,
+        site: '@popcurate',
+      },
+      alternates: {
+        canonical: 'https://popcurate.vercel.app',
       },
     };
   } catch (error) {
@@ -71,8 +84,52 @@ export default async function Home() {
     recommendedMovies = await fetchRecommendedMovies(userId);
   }
 
+  // Fetch trending movies for ItemList schema
+  let trendingMovies: TMDbMovie[] = [];
+  try {
+    const trending = await tmdbClient.getTrendingMovies('week', 1);
+    trendingMovies = trending.results.slice(0, 10);
+  } catch (error) {
+    console.error('Error fetching trending movies for schema:', error);
+  }
+
+  // ItemList Schema for trending movies
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Trending Movies on Popcurate',
+    description: 'The most popular and trending movies this week on Popcurate',
+    itemListElement: trendingMovies.map((movie, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Movie',
+        name: movie.title,
+        image: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : undefined,
+        datePublished: movie.release_date,
+        aggregateRating: movie.vote_average
+          ? {
+              '@type': 'AggregateRating',
+              ratingValue: movie.vote_average.toFixed(1),
+              ratingCount: movie.vote_count,
+              bestRating: 10,
+            }
+          : undefined,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen">
+      {/* JSON-LD structured data for trending movies */}
+      {trendingMovies.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        />
+      )}
       {/* Hero Section with Background */}
       <section className="from-primary/5 via-background to-secondary/5 relative overflow-hidden bg-gradient-to-br py-12 lg:py-20">
         <div className="container mx-auto max-w-6xl px-4">
@@ -81,13 +138,15 @@ export default async function Home() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                  Find Your Next
+                  <span className="text-primary">Popcurate:</span> Find Your
+                  Next
                   <br />
-                  <span className="text-primary">Favorite Movie</span>
+                  Favorite Movie
                 </h1>
                 <p className="text-muted-foreground text-lg sm:text-xl">
                   Discover, explore, and curate your perfect movie collection
-                  with Popcurate.
+                  with Popcurate - your personalized movie recommendation
+                  platform.
                 </p>
               </div>
             </div>
