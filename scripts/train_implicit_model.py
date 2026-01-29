@@ -21,7 +21,10 @@ def vectorize_overviews(overviews, min_df=5, max_df=0.5):
         tfidf_matrix (scipy.sparse matrix): TF-IDF matrix.
         vectorizer (TfidfVectorizer): Fitted vectorizer object.
     """
+    # remove common english words, remove words that appear in less than the min_df documents or 
+    # more than max_df proportion of documents
     vectorizer = TfidfVectorizer(stop_words='english', min_df=min_df, max_df=max_df)
+    # reads overview and list all the unique words then it converts each overview into a vector
     tfidf_matrix = vectorizer.fit_transform(overviews)
     return tfidf_matrix, vectorizer
 
@@ -39,10 +42,19 @@ def compute_user_profile_vector(watchlist_ids, tfidf_matrix, item_code_map):
     Computes the user profile vector by averaging TF-IDF vectors of watchlist movies.
     """
     from scipy.sparse import vstack
+    # Example: If the user watched Movie A (keywords: alien, ship) and Movie B (keywords: alien, war), 
+    # it grabs the mathematical rows for both.
     vectors = [tfidf_matrix[item_code_map[movie_id]] for movie_id in watchlist_ids if movie_id in item_code_map]
     if not vectors:
         return None
     stacked = vstack(vectors)
+    # example calculation
+    # Movie A has "Alien": 0.5
+    # Movie B has "Alien": 0.5
+    # User Profile has "Alien": 0.5 (Strong signal).
+    # Movie A has "Ship": 0.5
+    # Movie B has "Ship": 0.0
+    # User Profile has "Ship": 0.25 (Weaker signal).
     mean_vec = stacked.mean(axis=0)
     return np.asarray(mean_vec).flatten()
 
@@ -52,13 +64,21 @@ def hybrid_score_recommendations(recommended_codes, als_scores, tfidf_matrix, us
     """
     from sklearn.metrics.pairwise import cosine_similarity
     from scipy.sparse import vstack
+    # grabs the TF-IDF vectors for the recommended movies
     candidate_vectors = [tfidf_matrix[rec_code] for rec_code in recommended_codes]
     candidate_matrix = vstack(candidate_vectors)
+    # reshape user profile vector for cosine similarity calculation
     user_profile_vector_2d = user_profile_vector.reshape(1, -1)
+    # compute cosine similarity scores, results in a list of scores between 0 and 1
     content_scores = cosine_similarity(user_profile_vector_2d, candidate_matrix).flatten()
+    # normalize scores to [0, 1]
     norm_als_scores = (als_scores - als_scores.min()) / (als_scores.max() - als_scores.min() + 1e-6)
     norm_content_scores = (content_scores - content_scores.min()) / (content_scores.max() - content_scores.min() + 1e-6)
+    # control the balance, since alpha = 0.7, it means 70% ALS, 30% content
+    # The system prioritizes what is popular among similar users (ALS), but uses the plot 
+    # description (Content) as a tie-breaker or booster.
     hybrid_scores = alpha * norm_als_scores + (1 - alpha) * norm_content_scores
+    # It pairs the Movie IDs with their new Hybrid Scores and sorts them so the highest score is first.
     return sorted(zip(recommended_codes, hybrid_scores), key=lambda x: x[1], reverse=True)
 
 if __name__ == "__main__":
@@ -134,6 +154,3 @@ if __name__ == "__main__":
     print(f"   1. (Optional) Run: python scripts/enhance_with_gemini.py")
     print(f"      → Adds AI re-ranking with 'Because you watched...' explanations")
     print(f"   2. Start your app and visit /recommendations")
-
-    # Note: TF-IDF hybrid scoring is available but disabled for now
-    # To enable, uncomment lines 91-94 and modify this loop to use hybrid_score_recommendations()
