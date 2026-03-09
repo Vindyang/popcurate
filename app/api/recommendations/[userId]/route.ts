@@ -53,12 +53,18 @@ export async function GET(
             poster_path: tmdb.poster_path,
             backdrop_path: tmdb.backdrop_path,
             vote_average: tmdb.vote_average ?? 0,
+            vote_count: tmdb.vote_count ?? 0,
+            popularity: tmdb.popularity ?? 0,
+            adult: tmdb.adult ?? false,
+            original_language: tmdb.original_language ?? '',
+            original_title: tmdb.original_title ?? tmdb.title,
+            video: tmdb.video ?? false,
             release_date: tmdb.release_date ?? '',
             overview: tmdb.overview ?? '',
             genre_ids: tmdb.genres?.map((g: { id: number }) => g.id) ?? [],
             runtime: tmdb.runtime ?? null,
             score: rec.score,
-            matched_movie: rec.matched_movie, // From Gemini enhancement
+            matched_movie: rec.matched_movie,
           };
         }
       )

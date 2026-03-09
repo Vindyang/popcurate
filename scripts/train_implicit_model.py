@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     for user_idx in range(matrix_csr.shape[0]):
         user_id = user_map[user_idx]
-        recommended_codes, als_scores = model.recommend(user_idx, matrix_csr, N=50)
+        recommended_codes, als_scores = model.recommend(user_idx, matrix_csr[user_idx], N=50)
 
         # Create recommendations list (top 30)
         recs = [{"itemId": str(item_map[i]), "score": float(s)}
